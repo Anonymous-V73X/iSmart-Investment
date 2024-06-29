@@ -1,0 +1,308 @@
+/* My styles go here */
+
+@import url("https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Lilita+One&family=Signika+Negative:wght@300;400;500;600;700&display=swap");
+
+/* -------------- PRE-LOADER STYLES ------------- */
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 10px;
+  background: linear-gradient(to right, #ff512f, #f09819);
+  border-radius: 5px;
+  -webkit-animation: load 1.8s ease-in-out infinite;
+  animation: load 1.8s ease-in-out infinite;
+}
+
+.loader:before,
+.loader:after {
+  position: absolute;
+  display: block;
+  content: "";
+  -webkit-animation: load 1.8s ease-in-out infinite;
+  animation: load 1.8s ease-in-out infinite;
+  height: 10px;
+  border-radius: 5px;
+}
+
+.loader:before {
+  top: -20px;
+  left: 10px;
+  width: 40px;
+  background: linear-gradient(to left, #1845ad, #23a2f6);
+}
+
+.loader:after {
+  bottom: -20px;
+  width: 35px;
+  background: #fcfcfa;
+}
+
+@-webkit-keyframes load {
+  0% {
+    -webkit-transform: translateX(40px);
+    transform: translateX(40px);
+  }
+
+  50% {
+    -webkit-transform: translateX(-30px);
+    transform: translateX(-30px);
+  }
+
+  100% {
+    -webkit-transform: translateX(40px);
+    transform: translateX(40px);
+  }
+}
+
+@keyframes load {
+  0% {
+    -webkit-transform: translateX(40px);
+    transform: translateX(40px);
+  }
+
+  50% {
+    -webkit-transform: translateX(-30px);
+    transform: translateX(-30px);
+  }
+
+  100% {
+    -webkit-transform: translateX(40px);
+    transform: translateX(40px);
+  }
+}
+
+.get {
+  margin-top: 350px !important;
+}
+
+/* PreLoader Styling Starts Here... */
+
+.wrapper-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #b6b6d4 !important;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease;
+  /* SmoothIN' fade transition */
+}
+
+.wrapper-loader.fade {
+  opacity: 0;
+  pointer-events: none;
+  /* DisablING interaction with the loader */
+}
+
+.get {
+  color: #ffff;
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+  opacity: 0.8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #88888800;
+}
+
+::-webkit-scrollbar-track {
+  background: #fefdfd03;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+:root {
+  --color-primary: #7380ec;
+  --color-danger: #ff7782;
+  --color-success: #41f1b6;
+  --color-warning: #ffbb55;
+  --color-kes: #fdbc7c;
+  --color-white: #fff;
+  --color-info-dark: #7d8da1;
+  --color-info-light: #dce1eb;
+  --color-dark: #363949;
+  --color-light: rgba(132, 139, 200, 0.18);
+  --color-primary-variant: #111e88;
+  --color-dark-variant: #677483;
+  --color-background: #f6f6f9;
+
+  --color-welcome: #111e88;
+  --card-border-radius: 2rem;
+  --border-radius-1: 0.4rem;
+  --border-radius-2: 0.8rem;
+  --border-radius-3: 1.2rem;
+
+  --card-padding: 1.8rem;
+  --padding-1: 1.2rem;
+
+  --box-shadow: 0 2rem 3rem var(--color-light);
+}
+.ilog {
+  color: var(--color-info-dark);
+}
+
+.log {
+  color: var(--color-primary);
+}
+
+.logo1 {
+  display: flex;
+  gap: 10px;
+}
+
+.fa-coins {
+  color: var(--color-kes);
+}
+
+body {
+  font-family: "Bai Jamjuree", sans-serif;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+h2 {
+  color: var(--color-warning);
+}
+
+h4 {
+  color: var(--color-warning);
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.h6 {
+  font-weight: 700;
+}
+
+p {
+  font-weight: 500;
+  color: var(--color-dark-variant);
+}
+.intro {
+  color: var(--color-primary);
+}
+
+.text-muted {
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .list-inline {
+    display: flex;
+
+    gap: 4px;
+  }
+
+  .navbar-nav {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+  }
+
+  .craft {
+    margin-top: -90px;
+  }
+}
+
+.btn {
+  border-radius: 30px;
+  font-size: 16px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.card {
+  border: 2px solid #67748312 !important ;
+
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: #fff;
+}
+
+.success {
+  color: var(--color-success);
+}
+
+.h5 {
+  color: var(--color-dark);
+  font-weight: bold !important;
+}
+
+.seven {
+  color: var(--color-warning);
+}
+
+.btn-play {
+  background-color: var(--color-warning);
+  border: none;
+}
+
+.nav-link {
+  color: slategray;
+  display: inline-block;
+  font-weight: 600 !important;
+}
+
+@media (min-width: 968px) {
+  .nav-link {
+    margin-left: 10px;
+  }
+}
+
+.alternate-content {
+  display: none;
+}
+
+/* Adding CSS to remove border or outline when clicked */
+button:focus {
+  outline: none;
+  border: none;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 0.3s linear 1;
+}
+
+#imageElement {
+  transition: opacity 1s ease-in-out;
+}
+
+.btn {
+  box-shadow: 0px 4px 6px rgba(1, 40, 74, 0.1);
+}
+
+.lead {
+  font-size: 16px;
+}
+
+@media (min-width: 767.98px) {
+  .quick {
+    margin-top: -400px;
+  }
+}
