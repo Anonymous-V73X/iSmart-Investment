@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+
+  <!-- Character encoding for proper text display -->
+  <meta charset="UTF-8" />
+
+  <!-- Responsive viewport settings -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Ensure compatibility with Internet Explorer -->
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <!-- Page title -->
+  <title>iSmart Signup</title>
+
+  <!-- Preconnecting to fonts.gstatic.com for faster font loading -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+
+  <!-- Font Awesome icons stylesheet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- Google Fonts stylesheet (Poppins) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+  <!-- Custom stylesheet for the registration page -->
+  <link rel="stylesheet" href="./register.css">
+
+  <!-- jQuery library for JavaScript functionality -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+</head>
+
+
+
+
+
+
+
+
+
+
+<body>
+
+  <!-- Background shapes -->
+  <div class="background">
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+
+  <!-- Registration form container -->
+  <div style="display: flex; justify-content:center; align-items:center;">
+
+    <form style="display: flex; justify-content: center; flex-direction: column;">
+      <h3>Register</h3>
+
+      <!-- Email input -->
+      <label for="email">Email</label>
+      <input type="text" placeholder="Enter Email" id="email" required>
+      <p id="email-validation"></p>
+
+      <!-- Username input -->
+      <label for="username">Username</label>
+      <input type="text" placeholder="Enter Username" id="username" required>
+      <p id="username-validation"></p>
+
+      <!-- Mpesa number input -->
+      <label for="mpesaNumber">Mpesa no.</label>
+      <input type="text" placeholder="Enter Mpesa Number" id="mpesaNumber" required>
+      <p id="mpesa-validation"></p>
+
+      <!-- Password input -->
+      <label for="password">Password</label>
+      <input type="password" placeholder="Enter Password" id="password" required>
+
+      <!-- Confirming password input -->
+      <label for="re-entered-password">Confirm Password</label>
+      <input type="password" placeholder="Re-Enter Password" id="re-entered-password" required>
+      <p id="password-match-message"></p>
+
+      <!-- Gender input -->
+      <label for="gender">Gender</label>
+      <select id="gender" required>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+
+      <!-- Sign Up button -->
+      <button id="submit" disabled>Sign Up</button>
+
+      <!-- Social links and login option -->
+      <div class="social">
+        Already have an iSMART account?
+        <div class="go" id="loginLink"><i class="fas fa-user"></i> Login</div>
+      </div>
+    </form>
+
+  </div>
+
+  <!-- Alert message container -->
+  <div class="alert hide">
+    <span class="fas fa-exclamation-circle"></span>
+    <span class="msg"></span>
+    <div class="close-btn">
+      <span class="fas fa-times"></span>
+    </div>
+  </div>
+
+
+  <!-- Script for registration using Firebase -->
+  <script src="./firebase-register.js" type="module"></script>
+
+
+</body>
+
+
+</html>

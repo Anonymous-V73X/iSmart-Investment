@@ -1,0 +1,350 @@
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lilita+One&family=Signika+Negative:wght@300;400;500;600;700&display=swap");
+
+/* Reset default styles for all elements */
+*,
+*:before,
+*:after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+  background-color: #04001e;
+  height: 1300px;
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none !important;
+  touch-action: pan-y pinch-zoom !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Hide scrollbar */
+body::-webkit-scrollbar {
+  width: 0px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Background shapes */
+.background {
+  width: 430px;
+  height: 520px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+}
+
+.background .shape {
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.shape:first-child {
+  background: linear-gradient(#1845ad, #23a2f6);
+  left: -80px;
+  top: -80px;
+}
+
+.shape:last-child {
+  background: linear-gradient(to right, #ff512f, #f09819);
+  right: -30px;
+  bottom: -80px;
+}
+
+/* Form styles */
+form {
+  height: 1100px;
+  width: 450px;
+  background-color: rgba(255, 255, 255, 0.13);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 30px 35px;
+  margin-top: 280px;
+}
+
+/* Form elements */
+form * {
+  font-family: "Bai Jamjuree", sans-serif;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+form h3 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 42px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-top: 30px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 20px;
+}
+
+/* Input placeholder styling */
+::placeholder {
+  color: #e5e5e5;
+  font-weight: 500;
+  opacity: 0.4;
+}
+
+/* Input focus styling */
+input:focus {
+  border: #bdb6f594 4px solid !important;
+  border-radius: 20px;
+  background-color: #403962;
+}
+
+input:focus::placeholder {
+  color: transparent;
+}
+
+/* Button styles */
+button {
+  margin-top: 50px;
+  width: 100%;
+  background: linear-gradient(to right, #ff512f, #f09819);
+  color: #f3f2fa;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: linear-gradient(to left, #ff512f, #f09819);
+}
+
+/* Gender input */
+label[for="gender"] {
+  margin-top: 30px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Gender input */
+#gender {
+  display: block;
+  height: 50px;
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 10px !important;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 20px;
+  border: none;
+  color: #ffffff;
+  padding-right: 40px !important;
+  -webkit-appearance: none; /* Removing default arrow for some browsers */
+  appearance: none; /* Removing default arrow for other browsers */
+}
+
+/* Gender input focus styling */
+#gender:focus {
+  border: #bdb6f594 4px solid !important;
+  border-radius: 20px;
+  background-color: #403962;
+}
+
+/* Styling the dropdown options */
+#gender option {
+  background-color: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+  font-weight: 500;
+  padding-right: 20px !important;
+}
+
+/* Social section */
+.social {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: #eeedfc;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.social div {
+  width: 150px;
+  border-radius: 20px;
+  padding: 10px 10px 10px 8px;
+  background-color: rgba(255, 255, 255, 0.27);
+  color: #fbf9ea;
+  text-align: center;
+  margin-top: 15px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.social div:hover {
+  background-color: rgba(255, 255, 255, 0.47);
+}
+
+/* Responsive design  media query styling ....*/
+@media (max-width: 768px) {
+  .background {
+    width: 100%;
+  }
+  form {
+    width: 95%;
+  }
+  input {
+    border-radius: 10px;
+  }
+  body {
+    overflow-x: hidden;
+  }
+}
+
+/* Validation messages */
+#password-match-message,
+#mpesa-validation,
+#username-validation,
+#email-validation {
+  background-color: #cac8fcfd;
+  display: none;
+  margin-top: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  padding-top: 8px;
+  font-weight: 600;
+  font-size: small;
+  opacity: 1;
+  width: max-content;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-left: 12px solid rgb(251, 185, 103);
+}
+
+/* Alert styling */
+.alert {
+  background: #ffdb9b;
+  padding: 20px 40px;
+  min-width: 100px;
+  position: fixed;
+  right: 0;
+  top: 10%;
+  border-radius: 4px;
+  border-left: 8px solid #ffa502;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  font-family: "Bai Jamjuree", sans-serif !important;
+  font-size: 12px !important;
+}
+
+.alert.showAlert {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.alert.show {
+  animation: show_slide 1s ease forwards;
+}
+
+@keyframes show_slide {
+  0% {
+    transform: translateX(100%);
+  }
+  40% {
+    transform: translateX(-10%);
+  }
+  80% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+.alert.hide {
+  animation: hide_slide 1s ease forwards;
+}
+
+@keyframes hide_slide {
+  0% {
+    transform: translateX(-10px);
+  }
+  40% {
+    transform: translateX(0%);
+  }
+  80% {
+    transform: translateX(-10%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.alert .fa-exclamation-circle {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ce8500;
+  font-size: 30px;
+}
+
+.alert .msg {
+  padding: 0 20px;
+  font-size: 12px;
+  color: #ce8500;
+  font-weight: 600;
+}
+
+.alert .close-btn {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffd080;
+  padding: 20px 18px;
+  cursor: pointer;
+}
+
+.alert .close-btn:hover {
+  background: #ffc766;
+}
+
+.alert .close-btn .fas {
+  color: #ce8500;
+  font-size: 22px;
+  line-height: 40px;
+}

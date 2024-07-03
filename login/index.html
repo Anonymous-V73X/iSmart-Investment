@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>iSMART Login</title>
+
+  <!-- External CSS stylesheets -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="./login.css">
+
+  <!-- jQuery library -->
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+</head>
+
+
+
+
+<body>
+
+  <!-- Background shapes -->
+  <div class="background">
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+
+  <!-- Login Form -->
+  <form>
+
+    <h3>Sign In</h3>
+
+    <!-- Email input -->
+    <label for="email">Email</label>
+    <input type="text" placeholder="Enter Email" id="email" required>
+
+    <!-- Password input -->
+    <label for="password">Password</label>
+    <input type="password" placeholder="Enter Password" id="password" required>
+
+    <!-- Log In button -->
+    <button id="submit">Log In</button>
+
+    <!-- Social links and registration option -->
+    <div class="social">
+      Don't have an iSMART account yet?
+      <div style="display: flex; background:none; width:100%; gap:0px; justify-content:center; align-items:center; flex-direction:column;
+      ">
+        <div style="display: inline-block;" class="go" id="registerLink"><i class="fas fa-user"></i> Register</div>
+        <!-- Add this HTML code to your login form -->
+        <div style="padding-left: 12px; padding-right: 10px;" class="go"> <a id="forgot-password-link">Forgot
+            Password?</a>
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </form>
+
+  <!-- Custom Alert Popup -->
+  <div class="alert hide">
+    <span class="fas fa-exclamation-circle"></span>
+    <span class="msg"></span>
+    <div class="close-btn">
+      <span class="fas fa-times"></span>
+    </div>
+  </div>
+
+  <!-- Firebase login script -->
+  <!-- Add Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js" type="module"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js" type="module"></script>
+  <script src="./firebase-login.js" type="module"></script>
+
+</body>
+
+</html>
