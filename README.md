@@ -4,5 +4,6 @@ The iSmart - Seamless Investment Platform aims to revolutionize the investment l
 
 check out our live progress at https://ismartinvestment.surge.sh
 next step is the dashboard 
+we are now on chapter 03 of Documentation...
 
 warm regards.
