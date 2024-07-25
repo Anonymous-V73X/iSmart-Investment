@@ -299,36 +299,6 @@ b {
   color: var(--color-warning);
 }
 
-.simba {
-  background-color: #ffffff2b;
-  padding-left: 25px;
-  margin-left: -30px;
-  height: 230px;
-  margin-bottom: -28px;
-  margin-top: -10px;
-  padding-right: 100px;
-  color: #ffff;
-  line-height: 1.3;
-  border-bottom-right-radius: 200px;
-  border-top-right-radius: 200px;
-
-  padding-top: 10px;
-}
-
-.sales {
-  overflow: hidden;
-}
-
-.simbaFont {
-  font-size: 20px !important;
-  color: #ffc300;
-}
-
-.inv {
-  font-size: 20px;
-  color: #ffc300;
-}
-
 aside {
   height: 100vh;
 }
@@ -365,7 +335,7 @@ aside .sidebar {
 
 aside h3 {
   font-weight: 500;
-   font-size: 15px;
+  font-size: 15px;
 }
 
 aside .sidebar a {
@@ -421,16 +391,44 @@ aside .sidebar a:hover span {
   margin-left: 1rem;
 }
 
+.hinfo h3 {
+  font-size: 17px !important;
+  font-weight: 600;
+}
+
+.hinfo h4 {
+  font-size: 16px !important;
+  padding-top: 7px;
+  font-weight: 500;
+}
+
+.hinfo {
+  display: flex;
+
+  flex-direction: column;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  padding-left: 20px !important;
+}
+
+.hinfo {
+  margin-bottom: 20px;
+  
+  border-radius: 10px;
+  box-shadow: 4px 4px 9px rgba(1, 12, 37, 0.2),
+    -4px -4px 8px rgba(255, 255, 255, 0.1);
+  padding: 10px 40px 30px 30px !important;
+  margin-top: 20px;
+}
+
 /* ================== MAIN ==================== */
 main {
   margin-top: 1.4rem;
 }
 
-
-@media(min-width:768px){
-  main{
-
-    margin-bottom: 100px;
+@media (min-width: 768px) {
+  main {
+    margin-bottom: 450px;
   }
 }
 
@@ -448,17 +446,15 @@ main .welcome {
 }
 
 .welcome::before {
-  content: "+";
-
+  content: "+"; /* Required for pseudo-elements */
   display: inline-block;
   width: 6px;
   height: 6px;
-
-  color: lightgreen;
-  border-radius: 50%; /* Make it a circular dot */
+  color: lightgreen; /* Light green color for the dot */
+ 
   position: absolute;
   top: 2px; /* Position at the vertical center of .welcome */
-  left: 6px; /* Adjust the distance from the left edge */
+  left: 7px; /* Adjust the distance from the left edge */
   transform: translateY(50%); /* Center the dot vertically */
   animation: blink ease-in-out 2s infinite;
 }
@@ -787,6 +783,7 @@ main .recent-orders a {
 }
 
 /* ================= MEDIA QUERIES ================ */
+/* ================= MEDIA QUERIES ================ */
 @media screen and (min-width: 768px) {
   .container {
     width: 94%;
@@ -835,6 +832,7 @@ main .recent-orders a {
     width: 83vw;
   }
 }
+
 /* ================= MEDIA QUERIES ================ */
 @media screen and (max-width: 768px) {
   .container {
@@ -919,6 +917,14 @@ main .recent-orders a {
   main .recent-orders table {
     width: 100%;
     margin: 0;
+  }
+
+  main .recent-orders table td:last-child {
+    display: none;
+  }
+
+  main .recent-orders table th:last-child {
+    display: none;
   }
 
   .right {
@@ -1019,28 +1025,25 @@ main .recent-orders a {
 }
 
 /* Alert styling */
-/* Alert styling */
 .alert {
   background: #ffdb9b;
   padding: 20px 40px;
   min-width: 100px;
   position: fixed; /* Change from absolute to fixed */
-  right: 10px; /* Adjust this value for horizontal positioning */
-  top: -100px; /* Move it off the screen initially */
+  right: 0;
+  top: 10%;
   border-radius: 4px;
   border-left: 8px solid #ffa502;
   overflow: hidden;
-  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   font-family: "Bai Jamjuree", sans-serif !important;
   font-size: 12px !important;
-  z-index: 10000;
 }
 
 .alert.showAlert {
-  opacity: 1;
+  visibility: visible;
   pointer-events: auto;
-  top: 10px; /* Adjust this value for the final top positioning */
 }
 
 /* Rest of your styles remain the same */
@@ -1127,13 +1130,82 @@ main .recent-orders a {
   line-height: 40px;
 }
 
+.title {
+  color: var(--color-primary);
+  padding: 10px;
+  background-color: var(--color-light);
+}
+
+@media (min-width: 768px) {
+  .showall {
+    margin-left: -20% !important;
+  }
+
+  #logout {
+    margin-bottom: -400px !important;
+    color: rgb(247, 147, 147);
+  }
+
+  .stat {
+    padding-right: 20px;
+    padding-left: 0px;
+  }
+
+  .stat-am {
+    padding-right: 20px;
+  }
+}
+.inputter{
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 8px;
+  background-color: var(--color-background);
+  border: 2px solid rgb(181, 181, 252);
+  color: var(--color-dark);
+}
+
+
+.req:hover {
+  background-image: linear-gradient(to left, rgb(100, 100, 245), rgb(238, 79, 238));
+  cursor: pointer;
+}
+
+
+.with{
+  width: 100px;
+
+
+  border-radius: 50px;
+  opacity: 0.6;
+  
+}
+
+
+
+
+.tick{
+  width: 100px;
+  margin-top: -80px;
+}
+
+.ticker{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 0 10px;
+
+}
+
+.ticker-p{
+  margin-top: 40px;
+  margin-bottom: 40px;
+  max-width: 300px!important;
+}
+
+
+
 .popUp {
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.338
-  ); /* Adjust alpha for transparency */
+  background-color: rgba(253, 166, 166, 0.527)!important;
   padding: 20px;
   border-radius: 10px;
   display: flex;
@@ -1142,25 +1214,43 @@ main .recent-orders a {
   align-items: center;
   gap: 10px;
   position: fixed;
-  top: 50%;
+  top: 0%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.1);
   color: rgb(243, 68, 68);
   text-align: center;
   transition: transform 0.4s, top 0.4s;
   visibility: hidden;
-  backdrop-filter: blur(10px); /* Apply backdrop filter for glassmorphism */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  backdrop-filter: blur(4px); /* Apply backdrop filter for glassmorphism */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
   z-index: 10000;
-  width: 90%;
-  border: 5px solid rgba(255, 255, 255, 0.272);
+  width: 90%!important;
+
+   border: 3px solid var(--color-danger);
+ 
+
+  
+  
+}
+
+
+#success-Popup{
+  background-color: rgba(118, 167, 118, 0.357)!important; 
+
+   border: 3px solid var(--color-success);
+
+    backdrop-filter: blur(5px)!important;
+}
+
+#success-Popup .tick{
+  margin-top: -80px;
 }
 
 .popUp p {
   font-size: 15px;
   width: 300px;
   display: inline;
-  color: #fcfdfe;
+  color: var(--color-dark);
 }
 
 .open-popup {
@@ -1238,39 +1328,5 @@ main .recent-orders a {
     padding-left: 30px !important;
     padding-right: 30px !important;
     width: 400px;
-  }
-}
-
-@media (min-width: 768px) {
-  .showall {
-    margin-left: -20% !important;
-  }
-
-  #logout {
-    margin-bottom: -500px !important;
-    color: rgb(247, 147, 147);
-  }
-}
-
-/* Add this CSS to your stylesheet */
-.online-dot {
-  width: 5px;
-  height: 5px;
-  background-color: rgb(24, 211, 24);
-  border-radius: 50%;
-  position: absolute;
-  bottom: 3px;
-  right: 3px;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 1;
   }
 }
