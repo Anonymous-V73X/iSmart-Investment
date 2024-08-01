@@ -59,7 +59,7 @@ function addNewWeekInvestment(storedUserUid, database, withdrawalAmount) {
 
       // Calculate the current week
       const currentDate = new Date();
-      const oldDate = new Date("August 8, 2023 10:00:00");
+      const oldDate = new Date("July 1, 2024 10:00:00");
       const millisecondsPerWeek = 7 * 24 * 60 * 60 * 1000;
       const currentWeek =
         Math.floor((currentDate - oldDate) / millisecondsPerWeek) + 1;
