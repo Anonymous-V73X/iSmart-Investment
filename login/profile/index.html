@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iSMART Investment</title>
+
+  <!-- MATERIAL CDN -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet" />
+
+  <!-- STYLESHEET -->
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./profile.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+
+
+</head>
+
+
+<body>
+
+
+
+  <div class="wrapper-loader">
+
+    <div class='loader'></div>
+
+
+    <p class="get" id="typing-dots">Please Wait...</p>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <div class="alert hide">
+    <span class="fas fa-exclamation-circle"></span>
+    <span class="msg"></span>
+    <div class="close-btn">
+      <span class="fas fa-times"></span>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  <div class="container">
+
+
+    <aside>
+
+      <div class="top">
+        <div class="logo">
+
+          <i class="fas fa-coins"></i>
+
+
+
+          <h2 style="font-family: 'Lilita One', cursive;font-weight:100"> <span class="ilog">i</span><span
+              class="log">SMART</span>
+          </h2>
+
+        </div>
+
+
+        <div class="close" id="close-btn">
+          <span class="material-icons-sharp">close</span>
+        </div>
+
+
+      </div>
+
+      <div class="sidebar">
+
+        <a href="../dashboard/">
+          <span class="material-icons-sharp">person_outline</span>
+          <h3>Dashboard</h3>
+        </a>
+
+        <a href="../packages">
+          <span class="material-icons-sharp">grid_view</span>
+          <h3>Packages</h3>
+        </a>
+        <a href="../transactions/">
+          <span class="material-icons-sharp">receipt_long</span>
+          <h3>Statements</h3>
+        </a>
+        
+
+        <a href="../withdraw/">
+          <span class="material-icons-sharp">inventory</span>
+          <h3>Withdraw</h3>
+        </a>
+
+        <a href="">
+          <span class="material-icons-sharp">insights</span>
+          <h3>Analytics</h3>
+        </a>
+
+        <a class="active">
+          <span class="fas fa-user" style="font-size: 18px;"></span>
+          <h3>Profile</h3>
+        </a>
+
+
+
+
+
+
+        <a class="logout" style=" color: rgb(247, 147, 147); margin-top:500px" >
+          <span id="logout" class="material-icons-sharp">logout</span>
+          <h3>Logout</h3>
+        </a>
+
+
+
+
+
+
+
+      </div>
+    </aside>
+    <!------------------ END OF ASIDE ------------------>
+
+
+
+
+
+    <main>
+      <h1>Profile</h1>
+
+      <div class="welcome">
+        Your Details
+      </div>
+
+
+
+
+      <div class="insights" style="display: flex;
+      flex-direction:column;">
+
+
+
+
+
+        <div class="sales">
+
+          <div style="border-radius: 50%;" class="info-pic" onclick="showImageUploadPopup()">
+            <img class="profile-image" src="" alt="">
+          </div>
+
+
+
+
+
+          <div class="combiner" style="justify-content: center; align-items:left;">
+            <div class="hinfo">
+              <h3 class="username"><i class="fas fa-user"></i> Username:</h3>
+              <h4 class="username-value"></h4>
+            </div>
+            <div class="hinfo">
+              <h3 class="email"><i class="fas fa-envelope"></i> Email:</h3>
+              <h4 class="email-value"></h4>
+            </div>
+            <div class="hinfo">
+              <h3 class="mpesa-number"><i class="fas fa-mobile-alt"></i> Mpesa Number:</h3>
+              <h4 class="mpesa-number-value"></h4>
+            </div>
+
+            <div class="hinfo">
+              <h3 class="user-bio"><i class="fas fa-user"></i> Bio:</h3>
+              <h4 class="user-bio-value"></h4>
+            </div>
+
+            <div class="hinfo">
+              <h3 class="user-gender"><i style="color:rgb(93, 195, 93)" class="fas fa-venus-mars"></i> Gender:</h3>
+              <h4 class="user-gender-value"></h4>
+            </div>
+
+
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+          <div id="edit-profile-button"
+            style="background-color: #7380ec; padding: 10px 30px; border-radius: 10px; font-size: 16px; font-weight: 700; color: white; margin-top: 20px;">
+            Edit Profile
+          </div>
+
+          <div id="edit-profile-popup" class="popup">
+            <form id="edit-profile-form">
+              <input type="text" id="edit-username" placeholder="Username" required>
+              
+              <input type="number" id="edit-mpesa-number" placeholder="M-Pesa Number" required readonly>
+              
+              <script>
+                // Get the M-Pesa number from localStorage
+                var mpesaNumber = localStorage.getItem('mpesaNumber');
+
+                // Check if the value is not null or undefined before setting it
+                if (mpesaNumber !== null && mpesaNumber !== undefined) {
+                  document.getElementById('edit-mpesa-number').value = mpesaNumber;
+                }
+              </script>
+
+              <!-- Input field for Bio -->
+              <input type="text" id="edit-bio" placeholder="Bio" required>
+              <!-- Input field for Gender -->
+              <input type="text" id="edit-gender" placeholder="Gender" required>
+              <button type="submit">OK</button>
+            </form>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+        <!------------ END OF Transaction Card-------------->
+
+
+        <div class="sales" style="margin-bottom: 20px;">
+
+
+          <style>
+            .avatars {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 30px;
+              margin-top: 30px;
+              justify-content: center;
+              margin-bottom: 20px;
+            }
+
+            #avatar1,
+            #avatar2,
+            #avatar3,
+            #avatar4,
+            #avatar5,
+            #avatar6,
+            #avatar7,
+            #avatar8,
+            #avatar9 {
+              width: 100px;
+              border-radius: 100px;
+              border: 2px solid rgba(145, 145, 246, 0.289);
+            }
+
+
+            .username {
+              font-size: 19px !important;
+              padding-top: 10px;
+              margin-top: 20px !important;
+            }
+          </style>
+
+
+
+          <h3 class="username"><i class="fas fa-user"></i> Choose Avatar</h3>
+
+
+          <div class="avatars">
+            <img id="avatar1" src="../../img/avatar-1.png" alt="">
+            <img id="avatar2" src="../../img/avatar-2.png" alt="">
+            <img id="avatar7" src="../../img/avatar-7.png" alt="">
+            <img id="avatar3" src="../../img/avatar-3.png" alt="">
+            <img id="avatar4" src="../../img/avatar-4.png" alt="">
+            <img id="avatar5" src="../../img/avatar-5.png" alt="">
+            <img id="avatar6" src="../../img/avatar-6.png" alt="">
+
+
+            <img id="avatar9" src="../../img/avatar-9.png" alt="">
+          </div>
+
+
+
+
+
+          <script>
+            
+            document.addEventListener("DOMContentLoaded", function () {
+                const avatars = document.querySelectorAll(".avatars img");
+                const profileImage = document.querySelector(".profile-image");
+
+                // Load avatar from local storage if available
+                const savedAvatar = localStorage.getItem("selectedAvatar");
+                if (savedAvatar) {
+                  profileImage.setAttribute("src", savedAvatar);
+                }
+
+                avatars.forEach(avatar => {
+                  avatar.addEventListener("click", function () {
+                    const avatarSrc = avatar.getAttribute("src");
+                    profileImage.setAttribute("src", avatarSrc);
+                    localStorage.setItem("selectedAvatar", avatarSrc); // Store in local storage
+                    window.location.reload(); // Reload the page
+                  });
+                });
+              });
+
+          </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <!------------ END OF Transaction Card-------------->
+
+
+
+
+
+
+
+
+      </div>
+      <!------------ END OF INSIGHTS -------------->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </main>
+    <!----------------- END OF MAIN -------------------->
+
+
+
+
+
+
+
+
+
+    <div class="right">
+      <div class="top">
+        <button id="menu-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 448 512">
+            <path
+              d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
+          </svg>
+        </button>
+        <div class="theme-toggler">
+          <span class="material-icons-sharp">dark_mode</span>
+          <span class="material-icons-sharp active">light_mode</span>
+
+        </div>
+        <div class="profile">
+          <div class="info">
+            <p>Hey, <b id="username2"></b></p>
+            <small class="text-muted">User</small>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <!-- Clickable profile photo -->
+          <div class="profile-photo "
+            style="margin-top: 0px; display:flex; justify-content:center;align-items:center; position:relative; overflow:visible;"
+            onclick="showImageUploadPopup()">
+            <img style="border-radius: 50%;" id="profileImage" class="profile-image" src="" />
+            <div class="online-dot"></div>
+          </div>
+
+          <style>
+            /* Add this CSS to your stylesheet */
+            .online-dot {
+              width: 5px;
+              height: 5px;
+              background-color: rgb(24, 211, 24);
+              border-radius: 50%;
+              position: absolute;
+              bottom: 3px;
+              right: 3px;
+              animation: blink 1s infinite;
+            }
+
+            @keyframes blink {
+
+              0%,
+              100% {
+                opacity: 0;
+              }
+
+              50% {
+                opacity: 1;
+              }
+            }
+          </style>
+
+          <!-- Pop-up dialog for image upload -->
+          <div class="popup-container" id="popupContainer">
+            <div class="popup-content">
+
+              <input type="file" id="photo" onchange="uploadImageAndStoreUrl();" />
+
+            </div>
+          </div>
+
+
+
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const avatars = document.querySelectorAll(".avatars img");
+              const profileImage = document.getElementById("profileImage");
+
+              // Load avatar from local storage if available
+              const savedAvatar = localStorage.getItem("selectedAvatar");
+              if (savedAvatar) {
+                profileImage.setAttribute("src", savedAvatar);
+              }
+
+              avatars.forEach(avatar => {
+                avatar.addEventListener("click", function () {
+                  const avatarSrc = avatar.getAttribute("src");
+                  profileImage.setAttribute("src", avatarSrc);
+                  localStorage.setItem("selectedAvatar", avatarSrc); // Store in local storage
+                });
+              });
+            });
+          </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+      <!-- END OF TOP -->
+
+
+      <!----------------- END OF bonuses-------------------->
+
+
+
+
+
+      <div class="sales-analytics">
+        <h2>Quick Links</h2>
+
+
+
+
+        <div class="item customers" id="contact-us">
+          <div class="icon">
+            <span class="material-icons-sharp">person</span>
+          </div>
+          <div class="right">
+            <div class="info">
+              <h3>CONTACT US</h3>
+              <small class="text-muted">Available daytime</small>
+            </div>
+            <h5 class="success">Online</h5>
+            <h3></h3>
+          </div>
+        </div>
+
+
+        <script>document.addEventListener("DOMContentLoaded", function () {
+            const contactUsDiv = document.getElementById("contact-us");
+
+            contactUsDiv.addEventListener("click", function () {
+              window.location.href = "tel:0745179023";
+            });
+          });
+        </script>
+
+
+
+
+
+        <div class="item online" id="whatsapp-us">
+          <div class="icon">
+            <span class="material-icons-sharp">chat</span>
+          </div>
+
+          <div class="right">
+            <div class="info">
+              <h3>WHATSAPP US</h3>
+              <small class="text-muted">Online</small>
+            </div>
+            <h5 class="success">Online</h5>
+            <h3></h3>
+          </div>
+        </div>
+
+        <script>document.addEventListener("DOMContentLoaded", function () {
+            const whatsappUsDiv = document.getElementById("whatsapp-us");
+
+            whatsappUsDiv.addEventListener("click", function () {
+              window.location.href = "https://wa.me/254773602480";
+            });
+          });
+        </script>
+
+
+
+
+
+        <div class="item offline" id="email-us">
+          <div class="icon">
+            <span class="material-icons-sharp">email</span>
+          </div>
+          <div class="right">
+            <div class="info">
+              <h3>EMAIL</h3>
+              <small class="text-muted">For official business</small>
+            </div>
+            <h5 class="danger">Offline</h5>
+            <h3></h3>
+          </div>
+        </div>
+
+        <script>document.addEventListener("DOMContentLoaded", function () {
+            const emailUsDiv = document.getElementById("email-us");
+            const emailAddress = "captiosuskhid@gmail.com";
+
+            emailUsDiv.addEventListener("click", function () {
+              window.location.href = "mailto:" + emailAddress;
+            });
+          });
+
+
+
+
+
+        </script>
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+
+
+  <script src="./pic.js"></script>
+  <script src="./updateData.js" type="module"></script>
+
+  <script src="./refresh.js" type="module"></script>
+
+  <script src="./orders.js"></script>
+  <script src="./index.js"></script>
+</body>
+
+</html>

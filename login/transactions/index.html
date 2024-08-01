@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iSMART Investment</title>
+
+  <!-- MATERIAL CDN -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet" />
+
+  <!-- STYLESHEET -->
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./transactions.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+
+
+</head>
+
+
+<body>
+
+
+
+  <div class="wrapper-loader">
+
+
+
+    <div class='loader'></div>
+
+
+    <p class="get" id="typing-dots">Getting Things Ready</p>
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+
+  <div class="alert hide">
+    <span class="fas fa-exclamation-circle"></span>
+    <span class="msg"></span>
+    <div class="close-btn">
+      <span class="fas fa-times"></span>
+    </div>
+  </div>
+
+
+  <div class="container">
+
+
+    <aside>
+
+      <div class="top">
+        <div class="logo">
+
+          <i class="fas fa-coins"></i>
+
+
+
+          <h2 style="font-family: 'Lilita One', cursive;font-weight:100"> <span class="ilog">i</span><span
+              class="log">SMART</span>
+          </h2>
+
+        </div>
+
+
+        <div class="close" id="close-btn">
+          <span class="material-icons-sharp">close</span>
+        </div>
+
+
+      </div>
+
+      <div class="sidebar">
+
+        <a href="../dashboard/">
+          <span class="material-icons-sharp">person_outline</span>
+          <h3>Dashboard</h3>
+        </a>
+
+        <a href="../packages">
+          <span class="material-icons-sharp">grid_view</span>
+          <h3>Packages</h3>
+        </a>
+        <a class="active">
+          <span class="material-icons-sharp">receipt_long</span>
+          <h3>Statements</h3>
+        </a>
+        
+
+        <a href="../withdraw/">
+          <span class="material-icons-sharp">inventory</span>
+          <h3>Withdraw</h3>
+        </a>
+
+        <a href="#">
+          <span class="material-icons-sharp">insights</span>
+          <h3>Analytics</h3>
+        </a>
+
+        <a href="../profile/">
+          <span class="fas fa-user" style="font-size: 18px;"></span>
+          <h3>Profile</h3>
+        </a>
+
+
+
+
+
+
+        <a style=" color: rgb(247, 147, 147);" >
+          <span id="logout" class="material-icons-sharp">logout</span>
+          <h3>Logout</h3>
+        </a>
+
+
+
+
+
+
+
+      </div>
+    </aside>
+    <!------------------ END OF ASIDE ------------------>
+
+
+
+    <style>
+      @media(min-width:768px) {
+
+
+        .showall {
+          margin-left: -20% !important;
+        }
+
+        #logout {
+
+          color: rgb(247, 147, 147);
+
+        }
+
+
+      }
+    </style>
+
+    <main>
+      <h1>Transactions</h1>
+
+      <div class="welcome">
+        All Transactions
+      </div>
+
+
+
+
+      <div class="insights" style="display: flex;
+      flex-direction:column;">
+
+
+
+
+
+        <div class="sales">
+
+          <div class="middle">
+
+            <div class="left">
+
+              <h3>Deposit</h3>
+
+              <div class="refDiv">
+
+                <h3 id="reference" class="ref">Ref: RPD7287SU
+                </h3>
+
+                <small class="text-muted">2023 - 08 - 07:12:41</small>
+
+              </div>
+
+            </div>
+
+
+            <div class="typeDiv">
+              <div class="type-credit">
+                <p id="transactionType" style="font-weight: 600;">
+                  Credit
+
+                </p>
+              </div>
+
+
+              <div class="transaction">
+                <p id="transactionAmount" style="font-weight: 700;">
+                  30,000 <b class="money-kes" style="font-size: 10px;">KES</b>
+                </p>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+
+
+        <!------------ END OF Transaction Card-------------->
+
+
+
+        <div class="sales" style="padding-top: 0px; border-radius:10px">
+
+          <div class="middle">
+
+            <div class="left">
+
+              <h3>Withdrawal</h3>
+
+              <div style="display: flex; gap:0px; flex-direction:column; margin-top:5px;">
+
+                <h3 id="reference">Ref: RPW87268U
+                </h3>
+
+                <small class="text-muted">2023 - 08 - 07:12:41</small>
+
+              </div>
+
+            </div>
+
+
+            <div
+              style="margin-right: 10px; display:flex; flex-direction:column; gap:30px; padding-top:32px; justify-content:left; align-items:center;">
+
+
+              <div class="type-debit">
+                <p id="transactionType" style="font-weight: 600;">
+                  Debit
+
+                </p>
+              </div>
+
+
+              <div class="transaction">
+                <p id="transactionAmount" style="font-weight: 700;">
+                  4O,500 <b class="money-kes" style="font-size: 10px;">KES</b>
+                </p>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+
+
+
+
+
+        <!------------ END OF Transaction Card-------------->
+
+
+
+
+
+
+
+
+      </div>
+      <!------------ END OF INSIGHTS -------------->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </main>
+    <!----------------- END OF MAIN -------------------->
+
+
+
+
+
+
+
+
+
+    <div class="right">
+      <div class="top">
+        <button id="menu-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 448 512">
+            <path
+              d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
+          </svg>
+        </button>
+        <div class="theme-toggler">
+          <span class="material-icons-sharp">dark_mode</span>
+          <span class="material-icons-sharp active">light_mode</span>
+
+        </div>
+        <div class="profile">
+          <div class="info">
+            <p>Hey, <b id="username2"></b></p>
+            <small class="text-muted">User</small>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <!-- Clickable profile photo -->
+          <div class="profile-photo"
+            style="margin-top: 0px; display:flex; justify-content:center;align-items:center; position:relative; overflow:visible;"
+            onclick="showImageUploadPopup()">
+            <img style="border-radius: 50%;" id="profileImage" src="" />
+            <div class="online-dot"></div>
+          </div>
+
+          <style>
+            /* Add this CSS to your stylesheet */
+            .online-dot {
+              width: 5px;
+              height: 5px;
+              background-color: rgb(24, 211, 24);
+              border-radius: 50%;
+              position: absolute;
+              bottom: 3px;
+              right: 3px;
+              animation: blink 1s infinite;
+            }
+
+            @keyframes blink {
+
+              0%,
+              100% {
+                opacity: 0;
+              }
+
+              50% {
+                opacity: 1;
+              }
+            }
+          </style>
+
+          <!-- Pop-up dialog for image upload -->
+          <div class="popup-container" id="popupContainer">
+            <div class="popup-content">
+
+              <input type="file" id="photo" onchange="uploadImageAndStoreUrl();" />
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const avatars = document.querySelectorAll(".avatars img");
+              const profileImage = document.getElementById("profileImage");
+
+              // Load avatar from local storage if available
+              const savedAvatar = localStorage.getItem("selectedAvatar");
+              if (savedAvatar) {
+                profileImage.setAttribute("src", savedAvatar);
+              }
+
+              avatars.forEach(avatar => {
+                avatar.addEventListener("click", function () {
+                  const avatarSrc = avatar.getAttribute("src");
+                  profileImage.setAttribute("src", avatarSrc);
+                  localStorage.setItem("selectedAvatar", avatarSrc); // Store in local storage
+                });
+              });
+            });
+          </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+      <!-- END OF TOP -->
+      <div class="recent-updates">
+        <h2 class="bon" style="margin-top: 20px; ">Bonuses & Rewards</h2>
+
+
+        <div class="updates">
+
+
+
+          <div class="update">
+            <div class="profile-photo">
+              <img src="../../img/avatar-4.png" />
+            </div>
+            <div class="message">
+              <p>
+                <b>iSmart</b> sent you KES 100 for registering to the platform. <br> Enjoy your reward!
+              </p>
+              <small class="text-muted" id="timestamp-1">Loading...</small>
+            </div>
+          </div>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+        <div class="updates">
+
+
+
+          <div class="update">
+            <div class="profile-photo">
+              <img src="../../img/avatar-4.png" />
+            </div>
+            <div class="message">
+              <p>
+                <b>iSmart</b> Rewarded you with KES 50,000 bonus for consistently depositing capital for a period of 4
+                weeks! <br>Enjoy your bonus!
+              </p>
+              <small class="text-muted" id="timestamp-1">12 days ago</small>
+            </div>
+          </div>
+
+
+
+
+
+
+
+        </div>
+
+
+      </div>
+
+      <!----------------- END OF bonuses-------------------->
+
+
+
+
+
+      <div class="sales-analytics">
+        <h2>Quick Links</h2>
+
+
+
+
+        <div class="item customers" id="contact-us">
+          <div class="icon">
+            <span class="material-icons-sharp">person</span>
+          </div>
+          <div class="right">
+            <div class="info">
+              <h3>CONTACT US</h3>
+              <small class="text-muted">Available daytime</small>
+            </div>
+            <h5 class="success">Online</h5>
+            <h3></h3>
+          </div>
+        </div>
+
+
+        <script>document.addEventListener("DOMContentLoaded", function () {
+            const contactUsDiv = document.getElementById("contact-us");
+
+            contactUsDiv.addEventListener("click", function () {
+              window.location.href = "tel:0745179023";
+            });
+          });
+        </script>
+
+
+
+
+
+        <div class="item online" id="whatsapp-us">
+          <div class="icon">
+            <span class="material-icons-sharp">chat</span>
+          </div>
+
+          <div class="right">
+            <div class="info">
+              <h3>WHATSAPP US</h3>
+              <small class="text-muted">Online</small>
+            </div>
+            <h5 class="success">Online</h5>
+            <h3></h3>
+          </div>
+        </div>
+
+        <script>document.addEventListener("DOMContentLoaded", function () {
+            const whatsappUsDiv = document.getElementById("whatsapp-us");
+
+            whatsappUsDiv.addEventListener("click", function () {
+              window.location.href = "https://wa.me/254773602480";
+            });
+          });
+        </script>
+
+
+
+
+
+        <div class="item offline" id="email-us">
+          <div class="icon">
+            <span class="material-icons-sharp">email</span>
+          </div>
+          <div class="right">
+            <div class="info">
+              <h3>EMAIL</h3>
+              <small class="text-muted">For official business</small>
+            </div>
+            <h5 class="danger">Offline</h5>
+            <h3></h3>
+          </div>
+        </div>
+
+        <script>document.addEventListener("DOMContentLoaded", function () {
+            const emailUsDiv = document.getElementById("email-us");
+            const emailAddress = "captiosuskhid@gmail.com";
+
+            emailUsDiv.addEventListener("click", function () {
+              window.location.href = "mailto:" + emailAddress;
+            });
+          });
+
+
+
+
+
+        </script>
+
+
+
+
+
+
+
+        <a href="../profile/">
+          <div class="item add-product">
+            <div>
+              <span class="material-icons-sharp">add</span>
+              <h3>Edit Profile</h3>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+
+
+ 
+
+  <script src="./refresh.js" type="module"></script>
+
+  <script src="./transactions.js" type="module"></script>
+
+
+  <script src="./index.js"></script>
+
+</body>
+
+</html>

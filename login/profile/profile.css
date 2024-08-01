@@ -1,0 +1,89 @@
+.sales {
+  padding-top: 4px !important;
+  border-radius: 10px !important;
+}
+
+.refDiv {
+  display: flex;
+  gap: 0px;
+  flex-direction: column;
+  margin-top: 5px;
+}
+.typeDiv {
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px!important;
+  padding-top: 20px;
+  justify-content: left;
+  align-items: center;
+
+}
+
+.type-credit {
+  width: 80px;
+  background-color: #bff8e5;
+  height: 30px;
+
+  margin-bottom: 0px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: -8px;
+}
+
+.type-debit {
+  width: 80px;
+  background-color: #e5bfbf;
+  height: 30px;
+
+  margin-bottom: 0px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: -9px;
+}
+
+
+
+
+.type-debit p {
+  color: red;
+}
+
+.type-credit p {
+  color: green;
+}
+
+.transaction {
+  margin-bottom: 10px;
+}
+
+#reference {
+  margin-bottom: -5px;
+  margin-top: 30px;
+}
+
+#transactionAmount {
+  font-size: 16px;
+}
+
+.recent-updates {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+@media (min-width: 768px) {
+  .bon {
+    text-align: center;
+  }
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
