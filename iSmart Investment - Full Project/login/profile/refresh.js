@@ -9,7 +9,7 @@ import {
   update,
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
 
-// Your web app's Firebase configuration
+//$ Your web app's Firebase configuration                                      
 const firebaseConfig = {
   apiKey: "AIzaSyB6QD_Ufu8IiU8qrrzAUm3pjSXHQrNVqNs",
   authDomain: "i-smart-600b9.firebaseapp.com",
@@ -455,7 +455,7 @@ editProfileForm.addEventListener("submit", (event) => {
 
     // Update localStorage items with the new data
     localStorage.setItem("username", newUsername);
-   
+
     localStorage.setItem("mpesaNumber", newMpesaNumber);
     localStorage.setItem("defaultBio", newBio);
     localStorage.setItem("gender", newGender);

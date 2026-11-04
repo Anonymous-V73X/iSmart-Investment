@@ -296,7 +296,7 @@ if (storedUserUid2) {
 
 
 
-// Reference to the darkMode property in Firebase
+//* Reference to the darkMode property in Firebase
 const darkModeRef = ref(
   getDatabase(app),
   "users/" + storedUserUid2 + "/darkMode"
@@ -410,7 +410,7 @@ if (storedUserUid) {
 
 
 
-// Function to show an alert
+//! Function to show an alert
 function showAlert(message) {
   const alertElement = document.querySelector(".alert");
   const messageElement = alertElement.querySelector(".msg");
