@@ -131,21 +131,58 @@ const withdrawableBalanceElements = document.querySelectorAll(
 
 // Function to display withdrawable balance
 function displayWithdrawableBalance() {
-  // Create a reference to the user's withdrawableBalance
-  const withdrawableBalanceRef = ref(
-    database,
-    `users/${storedUserUid}/withdrawAmount`
-  );
+  function renderBalance() {
+    const recentInvestment = parseFloat(localStorage.getItem("recentWeekInvestment")) || 0;
+    const depositTime = parseInt(localStorage.getItem("investmentDepositTime") || "0");
+    const maturityTime = parseInt(localStorage.getItem("investmentMaturityTime") || "0");
+    const now = Date.now();
+    const isMatured = (maturityTime > 0 && now >= maturityTime);
 
-  // Listen for changes to the withdrawableBalance using onValue
-  onValue(withdrawableBalanceRef, (snapshot) => {
-    const withdrawableBalance = snapshot.val() || 0; // Default to 0 if the value is null
+    // If 7 days completed: Return full 135% (Investment + 35% Profit)
+    // If user cashes out early: Returns ONLY Principal (Investment), forfeiting the 35% profit
+    let payoutAmount = 0;
+    if (recentInvestment > 0) {
+      payoutAmount = isMatured ? (recentInvestment * 1.35) : recentInvestment;
+    } else {
+      payoutAmount = parseFloat(localStorage.getItem("withdrawAmount")) || 0;
+    }
 
-    // Update each withdrawableBalance element with the new value
+    localStorage.setItem("withdrawAmount", payoutAmount);
+
     withdrawableBalanceElements.forEach((element) => {
-      element.textContent = `${withdrawableBalance.toFixed(2)}`;
+      element.textContent = `${payoutAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     });
-  });
+
+    // Update subtitle advice
+    const infoSubtitle = document.querySelector(".insights .sales small");
+    if (infoSubtitle && recentInvestment > 0) {
+      if (isMatured) {
+        infoSubtitle.innerHTML = '<span style="color:#00a651; font-weight:700;">✓ Investment Matured: Full 35% profit included!</span>';
+      } else {
+        const remainingMs = maturityTime > now ? (maturityTime - now) : 0;
+        const daysLeft = Math.ceil(remainingMs / (1000 * 60 * 60 * 24));
+        infoSubtitle.innerHTML = `<span style="color:#f97316; font-weight:700;">⚠ Early Cashout Active: ${daysLeft}d left to 35% profit. Withdrawing now forfeits all profit.</span>`;
+      }
+    }
+  }
+
+  // Render immediately from localStorage
+  renderBalance();
+
+  // Also listen to database updates if available
+  if (storedUserUid) {
+    const withdrawableBalanceRef = ref(database, `users/${storedUserUid}/withdrawAmount`);
+    onValue(withdrawableBalanceRef, (snapshot) => {
+      const dbVal = snapshot.val();
+      if (dbVal !== null && dbVal !== undefined) {
+        localStorage.setItem("withdrawAmount", dbVal);
+      }
+      renderBalance();
+    }, (err) => {
+      console.warn("RTDB sync deferred:", err.message);
+      renderBalance();
+    });
+  }
 }
 
 // Call the function to display withdrawable balance

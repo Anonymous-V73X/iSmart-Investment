@@ -46,20 +46,18 @@ const userName = localStorage.getItem("userName");
 function updateUserDataElements() {
   const weekInvestmentSum = parseFloat(
     localStorage.getItem("weekInvestmentSum")
-  );
+  ) || 0;
   const cumulativeInvestment = document.getElementById("cummulative");
 
-  if (!isNaN(weekInvestmentSum)) {
+  if (cumulativeInvestment) {
     const expectedCumulativeInvestment = weekInvestmentSum * 1.35;
     cumulativeInvestment.textContent =
       expectedCumulativeInvestment.toLocaleString("en-US");
-  } else {
-    cumulativeInvestment.textContent = "0";
   }
 
   const recentWeekInvestment = parseFloat(
     localStorage.getItem("recentWeekInvestment")
-  );
+  ) || 0;
 
   const recentWeekInvestmentElement =
     document.getElementById("week-investment");
@@ -69,16 +67,38 @@ function updateUserDataElements() {
       : "0";
   }
 
-  const expectedRevenue = recentWeekInvestment * 1.35;
+  // 7-Day Maturity Check: Has 1 week passed since deposit?
+  const depositTime = parseInt(localStorage.getItem("investmentDepositTime") || "0");
+  const maturityTime = parseInt(localStorage.getItem("investmentMaturityTime") || "0");
+  const now = Date.now();
+  const isMatured = (maturityTime > 0 && now >= maturityTime);
+
+  // If matured: full 35% profit applied (amount * 1.35).
+  // If premature: principal only (amount), profit remains locked until Day 7.
+  const activeReturn = isMatured ? (recentWeekInvestment * 1.35) : recentWeekInvestment;
+  const potentialProfit = recentWeekInvestment * 0.35;
+
+  // Sync current withdrawAmount in localStorage
+  localStorage.setItem("withdrawAmount", activeReturn);
+  localStorage.setItem("isMatured", isMatured ? "true" : "false");
+
   const expectedRevenueElement = document.querySelector(".expenses .left h1");
   if (expectedRevenueElement) {
-    expectedRevenueElement.textContent =
-      expectedRevenue.toLocaleString("en-US");
-  } else {
-    const fallbackElement = document.createElement("h1");
-    fallbackElement.textContent = "0";
-    const parentElement = document.querySelector(".expenses .left");
-    parentElement.appendChild(fallbackElement);
+    expectedRevenueElement.textContent = isMatured
+      ? (recentWeekInvestment * 1.35).toLocaleString("en-US")
+      : (recentWeekInvestment > 0 ? `${recentWeekInvestment.toLocaleString("en-US")} (Maturing)` : "0");
+  }
+
+  // Update card subtext with dynamic maturity status badge
+  const revenueBadge = document.querySelector(".expenses .left small");
+  if (revenueBadge && recentWeekInvestment > 0) {
+    if (isMatured) {
+      revenueBadge.innerHTML = '<span style="color:#00a651; font-weight:800;">✓ Matured (135% Unlocked)</span>';
+    } else {
+      const remainingMs = maturityTime > now ? (maturityTime - now) : 0;
+      const daysLeft = Math.ceil(remainingMs / (1000 * 60 * 60 * 24));
+      revenueBadge.innerHTML = `<span style="color:#f59e0b; font-weight:700;">⏱ ${daysLeft} day${daysLeft !== 1 ? "s" : ""} to 35% bonus (Early withdraw = 0% profit)</span>`;
+    }
   }
 
   const userNameElement = document.getElementById("user-name");

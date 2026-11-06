@@ -303,9 +303,14 @@ async function executeSuccessfulInvestment() {
   let newRecent = amount;
   let newSum = currentSum + amount;
 
-  // 2. Optimistic local storage update
+  // 2. Optimistic local storage update with 7-day maturity lifecycle
+  const nowMs = Date.now();
+  const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
   localStorage.setItem("recentWeekInvestment", newRecent);
   localStorage.setItem("weekInvestmentSum", newSum);
+  localStorage.setItem("investmentDepositTime", nowMs);
+  localStorage.setItem("investmentMaturityTime", nowMs + sevenDaysMs);
+  localStorage.setItem("withdrawAmount", newRecent); // Initial withdrawable is principal (no profit yet)
 
   // 3. Record transaction in localStorage (handles both Array and Firebase Key-Object map)
   let rawTx = localStorage.getItem("transactions");
