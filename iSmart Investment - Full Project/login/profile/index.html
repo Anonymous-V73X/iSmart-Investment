@@ -204,10 +204,10 @@
 
 
 
-          <div id="edit-profile-button"
-            style="background-color: #7380ec; padding: 10px 30px; border-radius: 10px; font-size: 16px; font-weight: 700; color: white; margin-top: 20px;">
+          <button type="button" id="edit-profile-button" onclick="openEditProfileModal()"
+            style="background-color: #7380ec; padding: 10px 30px; border-radius: 10px; font-size: 16px; font-weight: 700; color: white; margin-top: 20px; cursor: pointer; border: none; display: inline-block;">
             Edit Profile
-          </div>
+          </button>
 
                     <!-- Modern Edit Profile Modal -->
           <div id="edit-profile-popup" class="popup-container" onclick="if(event.target === this) document.getElementById('edit-profile-popup').classList.remove('open');">
@@ -644,6 +644,23 @@
         });
       }
     })();
+  </script>
+  <script>
+    function openEditProfileModal() {
+      const modal = document.getElementById('edit-profile-popup');
+      if (modal) {
+        // Pre-populate values from localStorage
+        const u = localStorage.getItem('username') || localStorage.getItem('userName') || '';
+        const m = localStorage.getItem('mpesaNumber') || '';
+        const b = localStorage.getItem('defaultBio') || '';
+        const g = localStorage.getItem('gender') || 'Male';
+        if (document.getElementById('edit-username')) document.getElementById('edit-username').value = u;
+        if (document.getElementById('edit-mpesa-number')) document.getElementById('edit-mpesa-number').value = m;
+        if (document.getElementById('edit-bio')) document.getElementById('edit-bio').value = b;
+        if (document.getElementById('edit-gender')) document.getElementById('edit-gender').value = g;
+        modal.classList.add('open');
+      }
+    }
   </script>
 </body>
 

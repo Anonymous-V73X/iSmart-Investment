@@ -1099,6 +1099,9 @@ main .recent-orders a {
 
 
 /* Modern Image Upload Modal */
+.popup-container.open {
+  display: flex !important;
+}
 .popup-container {
   display: none;
   position: fixed;
