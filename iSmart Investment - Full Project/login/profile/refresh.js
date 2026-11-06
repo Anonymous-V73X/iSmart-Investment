@@ -40,9 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   if (userUid && savedAvatar) {
     // Update local storage with the selected avatar URL
-    if (savedAvatar && !savedAvatar.startsWith("data:")) {
-      localStorage.setItem("urlImage", savedAvatar);
-    }
+    localStorage.setItem("urlImage", savedAvatar); // safe: compressed base64 or URL
 
     const userRef = ref(database, "users/" + userUid);
 
@@ -69,7 +67,8 @@ function retrieveAndListenUserData(userUid, app) {
     const userData = snapshot.val();
     if (userData) {
       // Call the update function with the retrieved user data
-      updateUserDataElements(userData);
+      // User data element update
+      populateUserDetailsInHTML(userUid, app);
     }
   });
 }
@@ -243,10 +242,8 @@ if (storedUserUid) {
     const liveImageUrl = snapshot.val();
     if (liveImageUrl) {
       // Only cache in localStorage if it's a URL (not raw base64 — too large)
-      if (liveImageUrl && !liveImageUrl.startsWith("data:")) {
-        localStorage.setItem("urlImage", liveImageUrl);
-        localStorage.setItem("selectedAvatar", liveImageUrl);
-      }
+      localStorage.setItem("urlImage", liveImageUrl);
+      localStorage.setItem("selectedAvatar", liveImageUrl);
       updateProfileImageSrc(liveImageUrl);
     } else {
       const fallback = localStorage.getItem("urlImage") || "../../img/avatar-1.png";
@@ -282,46 +279,64 @@ function showAlert(message) {
   }, 3000); // Hide the alert after 3 seconds
 }
 
+// Function to compress an image via Canvas and return a small base64 string
+function compressImage(file, maxWidth, maxHeight, quality, callback) {
+  const img = new Image();
+  const url = URL.createObjectURL(file);
+  img.onload = function() {
+    URL.revokeObjectURL(url);
+    let w = img.width, h = img.height;
+    if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+    if (h > maxHeight) { w = Math.round(w * maxHeight / h); h = maxHeight; }
+    const canvas = document.createElement("canvas");
+    canvas.width = w; canvas.height = h;
+    canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+    callback(canvas.toDataURL("image/jpeg", quality));
+  };
+  img.onerror = function() { URL.revokeObjectURL(url); callback(null); };
+  img.src = url;
+}
+
 // Function to upload an image and store the URL with instant preview
 window.uploadImageAndStoreUrl = function() {
   const fileInput = document.querySelector("#photo");
   const file = fileInput?.files?.[0];
   if (!file) return;
 
-  // File size validation (max 2MB for RTDB storage)
-  if (file.size > 2 * 1024 * 1024) {
-    showAlert("File is too large! Please choose an image under 2MB.");
+  // File size validation (max 10MB raw — we compress it anyway)
+  if (file.size > 10 * 1024 * 1024) {
+    showAlert("File is too large! Please choose an image under 10MB.");
     return;
   }
-
-  // 1. Instant optimistic UI preview
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const previewUrl = e.target.result;
-    document.querySelectorAll("#profileImage, .profile-image").forEach(img => {
-      img.src = previewUrl;
-    });
-    // Store only a marker in localStorage u2014 not the full base64
-    localStorage.setItem("selectedAvatar", "pending");
-  };
-  reader.readAsDataURL(file);
 
   closeImageUploadPopup();
   showAlert("Uploading profile picture...");
 
   const storedUserUid = localStorage.getItem("userUid");
 
-  // 2. Read file as base64 and store in Firebase RTDB
-  const readerFinal = new FileReader();
-  readerFinal.onload = function(evt) {
-    const base64Data = evt.target.result;
-    if (storedUserUid) {
-      storeImageUrlInDatabase(storedUserUid, base64Data, app);
-      // After saving to RTDB, the onValue listener will update localStorage with the URL/base64
+  // Compress image to ~150x150px JPEG at 60% quality → usually < 20KB
+  compressImage(file, 150, 150, 0.6, function(compressedBase64) {
+    if (!compressedBase64) {
+      showAlert("Failed to process image. Please try again.");
+      return;
     }
+
+    // 1. Instant UI update
+    document.querySelectorAll("#profileImage, .profile-image").forEach(img => {
+      img.src = compressedBase64;
+    });
+
+    // 2. Persist in localStorage (compressed base64 is tiny — safe)
+    localStorage.setItem("urlImage", compressedBase64);
+    localStorage.setItem("selectedAvatar", compressedBase64);
+
+    // 3. Persist in Firebase RTDB for cross-device sync
+    if (storedUserUid) {
+      storeImageUrlInDatabase(storedUserUid, compressedBase64, app);
+    }
+
     showAlert("Profile picture updated successfully!");
-  };
-  readerFinal.readAsDataURL(file);
+  });
 };
 
 // ... (previously defined code)
