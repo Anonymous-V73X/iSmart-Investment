@@ -387,14 +387,7 @@ function populateUserDetailsInHTML(userUid, app) {
 
     // Set profile image src
     const activeProfileImg = profileImageUrl || localStorage.getItem("selectedAvatar") || "../../img/avatar-1.png";
-    if (activeProfileImg) {
-      profileImageElement.src = activeProfileImg;
-    } else {
-      profileImageElement.src = profileImageUrl;
-    } else {
-      // Set a default image if no URL is available
-      profileImageElement.src = "../../img/avatar-1.png";
-    }
+    profileImageElement.src = activeProfileImg;
   } else {
     console.error("One or more elements not found.");
   }

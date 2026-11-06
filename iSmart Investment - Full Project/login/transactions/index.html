@@ -658,6 +658,16 @@
 
   <script src="./index.js"></script>
 
+  <script>
+    (function() {
+      const cached = localStorage.getItem("urlImage") || localStorage.getItem("selectedAvatar");
+      if (cached) {
+        document.querySelectorAll("#profileImage, .profile-image").forEach(function(img) {
+          img.src = cached;
+        });
+      }
+    })();
+  </script>
 </body>
 
 </html>
