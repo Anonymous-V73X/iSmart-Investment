@@ -209,41 +209,63 @@
             Edit Profile
           </button>
 
-                    <!-- Modern Edit Profile Modal -->
+                              <!-- Modern Edit Profile Modal -->
           <div id="edit-profile-popup" class="popup-container" onclick="if(event.target === this) document.getElementById('edit-profile-popup').classList.remove('open');">
-            <div class="popup-content">
-              <div class="popup-header">
-                <h3><i class="fas fa-user-edit"></i> Edit Profile Details</h3>
-                <button type="button" class="popup-close-btn" onclick="document.getElementById('edit-profile-popup').classList.remove('open');" title="Close">&times;</button>
+            <div class="popup-content edit-profile-modal-card">
+              <!-- Header Gradient Banner -->
+              <div class="edit-modal-banner">
+                <div>
+                  <h3><i class="fas fa-user-circle"></i> Edit Profile</h3>
+                  <p>Update your personal account information</p>
+                </div>
+                <button type="button" class="edit-modal-close-btn" onclick="document.getElementById('edit-profile-popup').classList.remove('open');" title="Close">&times;</button>
               </div>
-              <form id="edit-profile-form" style="display:flex; flex-direction:column; gap:14px; margin-top:16px;">
-                <div>
-                  <label style="font-size:0.82rem; font-weight:600; opacity:0.8; display:block; margin-bottom:5px;">Username</label>
-                  <input type="text" id="edit-username" placeholder="Enter username" required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.15); font-size:0.95rem; background:inherit; color:inherit;">
+
+              <!-- Form Body -->
+              <form id="edit-profile-form" class="edit-modal-body">
+                <div class="form-group-custom">
+                  <label for="edit-username">Display Name</label>
+                  <div class="input-icon-wrapper">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="edit-username" placeholder="Enter username" required autocomplete="name">
+                  </div>
                 </div>
-                <div>
-                  <label style="font-size:0.82rem; font-weight:600; opacity:0.8; display:block; margin-bottom:5px;">M-Pesa Number (Registered)</label>
-                  <input type="text" id="edit-mpesa-number" placeholder="M-Pesa Number" readonly style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.15); font-size:0.95rem; background:rgba(0,0,0,0.05); color:inherit; cursor:not-allowed;">
+
+                <div class="form-group-custom">
+                  <label for="edit-mpesa-number">M-Pesa Number</label>
+                  <div class="input-icon-wrapper">
+                    <i class="fas fa-mobile-alt"></i>
+                    <input type="text" id="edit-mpesa-number" placeholder="254..." readonly title="Locked to your registered account">
+                  </div>
                 </div>
-                <div>
-                  <label style="font-size:0.82rem; font-weight:600; opacity:0.8; display:block; margin-bottom:5px;">Bio</label>
-                  <input type="text" id="edit-bio" placeholder="Tell us about yourself" required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.15); font-size:0.95rem; background:inherit; color:inherit;">
+
+                <div class="form-group-custom">
+                  <label for="edit-bio">Bio</label>
+                  <div class="input-icon-wrapper">
+                    <i class="fas fa-quote-left"></i>
+                    <input type="text" id="edit-bio" placeholder="Add a short bio" required>
+                  </div>
                 </div>
-                <div>
-                  <label style="font-size:0.82rem; font-weight:600; opacity:0.8; display:block; margin-bottom:5px;">Gender</label>
-                  <select id="edit-gender" required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.15); font-size:0.95rem; background:inherit; color:inherit;">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
+
+                <div class="form-group-custom">
+                  <label for="edit-gender">Gender</label>
+                  <div class="input-icon-wrapper">
+                    <i class="fas fa-venus-mars"></i>
+                    <select id="edit-gender" required>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
                 </div>
-                <div class="popup-actions" style="margin-top:10px;">
-                  <button type="button" class="popup-btn popup-btn-cancel" onclick="document.getElementById('edit-profile-popup').classList.remove('open');">Cancel</button>
-                  <button type="submit" class="popup-btn" style="background:#7380ec; color:#fff;">Save Changes</button>
+
+                <!-- Footer Action Buttons -->
+                <div class="edit-modal-actions">
+                  <button type="button" class="btn-secondary-modern" onclick="document.getElementById('edit-profile-popup').classList.remove('open');">Cancel</button>
+                  <button type="submit" class="btn-primary-modern"><i class="fas fa-save"></i> Save Changes</button>
                 </div>
               </form>
             </div>
-          </div>
           </div>
 
 

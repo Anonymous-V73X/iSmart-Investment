@@ -1096,75 +1096,205 @@ main .recent-orders a {
   margin-bottom: 20px;
 }
 
-.popup {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(251, 251, 251, 0.018);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  height: 300px;
-  width: 90%;
-  backdrop-filter: blur(10px);
-  border: 5px solid rgba(255, 255, 255, 0.041);
-  height: auto;
+/* ========================================================
+   MODERN EDIT PROFILE MODAL
+   ======================================================== */
+.edit-profile-modal-card {
+  max-width: 480px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  background: var(--color-white, #ffffff) !important;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(115, 128, 236, 0.12) !important;
 }
 
-.popup.open {
-  display: block;
+.edit-modal-banner {
+  background: linear-gradient(135deg, #7380ec 0%, #4e5fd7 100%);
+  padding: 24px 28px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
 }
 
-/* Style for inputs */
-#edit-username,
-#edit-email,
-#edit-mpesa-number,
-#edit-bio, /* Add styles for Bio input */
-#edit-gender /* Add styles for Gender input */ {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 25px;
+.edit-modal-banner h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff !important;
+}
+
+.edit-modal-banner p {
+  font-size: 0.82rem;
+  opacity: 0.85;
+  margin: 4px 0 0 0;
+  color: #ffffff;
+}
+
+.edit-modal-close-btn {
+  background: rgba(255, 255, 255, 0.2);
   border: none;
-  border-radius: 5px;
-  background-color: #f0f0f0;
-  font-size: 16px;
-  font-family: "Bai Jamjuree", sans-serif !important;
-  font-weight: 500;
-  color: #384859 !important;
-}
-
-/* Style for placeholder text */
-#edit-username::placeholder,
-#edit-email::placeholder,
-#edit-mpesa-number::placeholder,
-#edit-bio::placeholder, /* Add styles for Bio input placeholder */
-#edit-gender::placeholder /* Add styles for Gender input placeholder */ {
-  font-family: "Bai Jamjuree", sans-serif !important;
-}
-
-/* Style for button */
-#edit-profile-form button[type="submit"] {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #7380ec;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
+  color: #ffffff;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-family: "Bai Jamjuree", sans-serif !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.2s ease;
 }
 
-#edit-profile-form button[type="submit"]:hover {
-  background-color: #4e5fd7;
-  font-family: "Bai Jamjuree", sans-serif !important;
+.edit-modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: rotate(90deg);
+}
+
+.edit-modal-body {
+  padding: 24px 28px 28px 28px;
+}
+
+.form-group-custom {
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.form-group-custom label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--color-dark, #363949);
+  margin-bottom: 7px;
+  opacity: 0.85;
+}
+
+.input-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-wrapper i {
+  position: absolute;
+  left: 14px;
+  color: #7380ec;
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+.input-icon-wrapper input,
+.input-icon-wrapper textarea,
+.input-icon-wrapper select {
+  width: 100% !important;
+  padding: 12px 14px 12px 40px !important;
+  border-radius: 12px !important;
+  border: 1.5px solid rgba(115, 128, 236, 0.2) !important;
+  font-size: 0.92rem !important;
+  font-family: inherit !important;
+  background: var(--color-background, #f6f6f9) !important;
+  color: var(--color-dark, #363949) !important;
+  outline: none !important;
+  transition: all 0.2s ease !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.input-icon-wrapper input:focus,
+.input-icon-wrapper textarea:focus,
+.input-icon-wrapper select:focus {
+  border-color: #7380ec !important;
+  background: var(--color-white, #ffffff) !important;
+  box-shadow: 0 0 0 3px rgba(115, 128, 236, 0.15) !important;
+}
+
+.input-icon-wrapper input:read-only {
+  background: rgba(0, 0, 0, 0.04) !important;
+  cursor: not-allowed !important;
+  opacity: 0.75;
+}
+
+.edit-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.btn-secondary-modern {
+  background: var(--color-background, #f6f6f9) !important;
+  color: var(--color-dark, #363949) !important;
+  padding: 11px 22px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-secondary-modern:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+}
+
+.btn-primary-modern {
+  background: linear-gradient(135deg, #7380ec 0%, #4e5fd7 100%) !important;
+  color: #ffffff !important;
+  padding: 11px 26px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 6px 16px rgba(115, 128, 236, 0.35) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-primary-modern:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(115, 128, 236, 0.45) !important;
+}
+
+.dark-theme-variables .edit-profile-modal-card {
+  background: #181a1e !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark-theme-variables .input-icon-wrapper input,
+.dark-theme-variables .input-icon-wrapper textarea,
+.dark-theme-variables .input-icon-wrapper select {
+  background: #202528 !important;
+  color: #edeffd !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-theme-variables .input-icon-wrapper input:focus,
+.dark-theme-variables .input-icon-wrapper textarea:focus,
+.dark-theme-variables .input-icon-wrapper select:focus {
+  background: #2b3035 !important;
+  border-color: #7380ec !important;
+}
+
+.dark-theme-variables .btn-secondary-modern {
+  background: #202528 !important;
+  color: #edeffd !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-theme-variables .edit-modal-actions {
+  border-top-color: rgba(255, 255, 255, 0.08);
 }
 
 .combiner {
