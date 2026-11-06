@@ -325,29 +325,7 @@
 
 
 
-          <script>
-            
-            document.addEventListener("DOMContentLoaded", function () {
-                const avatars = document.querySelectorAll(".avatars img");
-                const profileImage = document.querySelector(".profile-image");
-
-                // Load avatar from local storage if available
-                const savedAvatar = localStorage.getItem("selectedAvatar");
-                if (savedAvatar) {
-                  profileImage.setAttribute("src", savedAvatar);
-                }
-
-                avatars.forEach(avatar => {
-                  avatar.addEventListener("click", function () {
-                    const avatarSrc = avatar.getAttribute("src");
-                    profileImage.setAttribute("src", avatarSrc);
-                    localStorage.setItem("selectedAvatar", avatarSrc); // Store in local storage
-                    window.location.reload(); // Reload the page
-                  });
-                });
-              });
-
-          </script>
+          
 
 
 
@@ -521,26 +499,7 @@
 
 
 
-          <script>
-            document.addEventListener("DOMContentLoaded", function () {
-              const avatars = document.querySelectorAll(".avatars img");
-              const profileImage = document.getElementById("profileImage");
-
-              // Load avatar from local storage if available
-              const savedAvatar = localStorage.getItem("selectedAvatar");
-              if (savedAvatar) {
-                profileImage.setAttribute("src", savedAvatar);
-              }
-
-              avatars.forEach(avatar => {
-                avatar.addEventListener("click", function () {
-                  const avatarSrc = avatar.getAttribute("src");
-                  profileImage.setAttribute("src", avatarSrc);
-                  localStorage.setItem("selectedAvatar", avatarSrc); // Store in local storage
-                });
-              });
-            });
-          </script>
+          
 
 
 

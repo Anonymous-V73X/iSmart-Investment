@@ -217,6 +217,7 @@ if (uploadedImageUrl) {
 
 // ... (previously defined code)
 // Function to update the profile image's src attribute
+// Unified Profile Image Management with Instant Persistence & Realtime Listener
 function updateProfileImageSrc(imageUrl) {
   const targetImages = document.querySelectorAll("#profileImage, .profile-image");
   const validUrl = (imageUrl && imageUrl.trim() !== "") ? imageUrl : "../../img/avatar-1.png";
@@ -226,32 +227,28 @@ function updateProfileImageSrc(imageUrl) {
   });
 }
 
+// 1. Instant Cache Render on script execution
+const cachedImage = localStorage.getItem("urlImage") || localStorage.getItem("selectedAvatar");
+if (cachedImage) {
+  updateProfileImageSrc(cachedImage);
+}
+
+// 2. Realtime sync with Firebase
 if (storedUserUid) {
-  const userRef = ref(getDatabase(app), "users/" + storedUserUid);
-
-  get(userRef)
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        const userData = snapshot.val();
-        const imageUrl = userData.urlImage;
-
-        if (imageUrl) {
-          // Update the profile image's src attribute with the retrieved URL
-          updateProfileImageSrc(imageUrl);
-        } else {
-          updateProfileImageSrc("../../img/avatar-1.png");
-        }
-
-        // ... (rest of your code)
-      } else {
-        console.error("User data not found.");
-      }
-    })
-    .catch((error) => {
-      console.error("Error retrieving user data:", error);
-    });
-} else {
-  console.error("User UID not found in session storage.");
+  const urlImageRef = ref(getDatabase(app), "users/" + storedUserUid + "/urlImage");
+  
+  // Realtime listener for cross-tab and cross-page synchronization
+  onValue(urlImageRef, (snapshot) => {
+    const liveImageUrl = snapshot.val();
+    if (liveImageUrl) {
+      localStorage.setItem("urlImage", liveImageUrl);
+      localStorage.setItem("selectedAvatar", liveImageUrl);
+      updateProfileImageSrc(liveImageUrl);
+    } else {
+      const fallback = localStorage.getItem("urlImage") || "../../img/avatar-1.png";
+      updateProfileImageSrc(fallback);
+    }
+  });
 }
 
 
@@ -389,7 +386,10 @@ function populateUserDetailsInHTML(userUid, app) {
     genderElement.textContent = gender || "N/A";
 
     // Set profile image src
-    if (profileImageUrl) {
+    const activeProfileImg = profileImageUrl || localStorage.getItem("selectedAvatar") || "../../img/avatar-1.png";
+    if (activeProfileImg) {
+      profileImageElement.src = activeProfileImg;
+    } else {
       profileImageElement.src = profileImageUrl;
     } else {
       // Set a default image if no URL is available
