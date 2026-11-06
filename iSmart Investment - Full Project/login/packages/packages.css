@@ -496,3 +496,25 @@ border: 1.5px solid rgba(254, 254, 254, 0.152);
 .dark-theme-variables .mpesa-summary-card {
   background: #202528 !important;
 }
+
+/* Ensure Bai Jamjuree is applied throughout the M-Pesa modal & phone input */
+.mpesa-modal-card,
+.mpesa-modal-card * {
+  font-family: "Bai Jamjuree", sans-serif !important;
+}
+
+.phone-input-wrap .prefix {
+  font-family: "Bai Jamjuree", sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.phone-input-wrap input,
+#stk-phone-input {
+  font-family: "Bai Jamjuree", sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+}
+
+#stk-pin-input {
+  font-family: "Bai Jamjuree", sans-serif !important;
+}

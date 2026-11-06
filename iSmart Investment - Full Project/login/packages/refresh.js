@@ -307,22 +307,34 @@ async function executeSuccessfulInvestment() {
   localStorage.setItem("recentWeekInvestment", newRecent);
   localStorage.setItem("weekInvestmentSum", newSum);
 
-  // 3. Record transaction in localStorage
-  let localTx = [];
+  // 3. Record transaction in localStorage (handles both Array and Firebase Key-Object map)
+  let rawTx = localStorage.getItem("transactions");
+  let txObject = {};
   try {
-    localTx = JSON.parse(localStorage.getItem("transactions") || "[]");
+    let parsed = JSON.parse(rawTx || "{}");
+    if (parsed && typeof parsed === "object") {
+      txObject = parsed;
+    }
   } catch (e) {
-    localTx = [];
+    txObject = {};
   }
-  localTx.unshift({
-    receiptNo: receiptNo,
-    type: "Deposit",
-    plan: plan,
+
+  const txKey = "tx_" + Date.now();
+  const newTxRecord = {
+    refNo: receiptNo,
     amount: amount,
-    date: timestamp,
-    status: "Completed"
-  });
-  localStorage.setItem("transactions", JSON.stringify(localTx));
+    package: plan,
+    status: "Approved",
+    type: "Deposit",
+    date: timestamp
+  };
+
+  if (Array.isArray(txObject)) {
+    txObject.unshift(newTxRecord);
+  } else {
+    txObject[txKey] = newTxRecord;
+  }
+  localStorage.setItem("transactions", JSON.stringify(txObject));
 
   // 4. Background Firebase RTDB updates
   if (userUid) {
