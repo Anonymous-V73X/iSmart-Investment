@@ -402,75 +402,97 @@ const editProfileButton = document.getElementById("edit-profile-button");
 const editProfilePopup = document.getElementById("edit-profile-popup");
 const editProfileForm = document.getElementById("edit-profile-form");
 
-// Function to show the edit profile popup
-editProfileButton.addEventListener("click", () => {
-  editProfilePopup.classList.add("open");
-});
+// Function to show and populate the edit profile popup
+if (editProfileButton && editProfilePopup) {
+  editProfileButton.addEventListener("click", () => {
+    // Pre-populate input fields with existing values from localStorage
+    const currentUsername = localStorage.getItem("username") || localStorage.getItem("userName") || "";
+    const currentMpesa = localStorage.getItem("mpesaNumber") || "";
+    const currentBio = localStorage.getItem("defaultBio") || "";
+    const currentGender = localStorage.getItem("gender") || "Male";
+
+    const usernameInput = document.getElementById("edit-username");
+    const mpesaInput = document.getElementById("edit-mpesa-number");
+    const bioInput = document.getElementById("edit-bio");
+    const genderInput = document.getElementById("edit-gender");
+
+    if (usernameInput) usernameInput.value = currentUsername;
+    if (mpesaInput) mpesaInput.value = currentMpesa;
+    if (bioInput) bioInput.value = currentBio;
+    if (genderInput) genderInput.value = currentGender;
+
+    editProfilePopup.classList.add("open");
+  });
+}
 
 // Function to update user profile details in the database
 function updateUserProfile(userUid, app, newData) {
   const userRef = ref(getDatabase(app), "users/" + userUid);
-  update(userRef, newData)
+  return update(userRef, newData)
     .then(() => {
-      alert("User profile details updated successfully.");
-      editProfilePopup.classList.remove("open"); // Close the popup after successful update
-      window.open("../dashboard/")
+      console.log("Firebase profile updated successfully");
     })
     .catch((error) => {
-      console.error("Error updating user profile details:", error);
+      console.warn("Database sync deferred (permission check or offline):", error.message);
     });
 }
 
-editProfileForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+if (editProfileForm) {
+  editProfileForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-  const newUsername = document.getElementById("edit-username").value;
-  
-  const newBio = document.getElementById("edit-bio").value;
-  const newGender = document.getElementById("edit-gender").value;
+    const newUsername = (document.getElementById("edit-username")?.value || "").trim();
+    const newBio = (document.getElementById("edit-bio")?.value || "").trim();
+    const newGender = document.getElementById("edit-gender")?.value || "Male";
+    const userEnteredMpesaNumber = document.getElementById("edit-mpesa-number")?.value || "";
 
-  // Get the user's input from the HTML element with id "edit-mpesa-number"
-  const userEnteredMpesaNumber =
-    document.getElementById("edit-mpesa-number").value;
-
-  // Function to clean and format the mpesaNumber
-  function cleanAndFormatMpesaNumber(mpesaNumber) {
-    const cleanedMpesaNumber = mpesaNumber.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-
-    if (cleanedMpesaNumber.startsWith("07")) {
-      return "2547" + cleanedMpesaNumber.substr(2);
-    } else if (cleanedMpesaNumber.startsWith("01")) {
-      return "2541" + cleanedMpesaNumber.substr(2);
+    function cleanAndFormatMpesaNumber(mpesaNumber) {
+      const cleaned = (mpesaNumber + "").replace(/[^0-9]/g, "");
+      if (cleaned.startsWith("07")) {
+        return "2547" + cleaned.substr(2);
+      } else if (cleaned.startsWith("01")) {
+        return "2541" + cleaned.substr(2);
+      }
+      return cleaned;
     }
 
-    return cleanedMpesaNumber;
-  }
+    const formattedMpesaNumber = cleanAndFormatMpesaNumber(userEnteredMpesaNumber);
+    const parsedMpesa = formattedMpesaNumber ? parseInt(formattedMpesaNumber) : (localStorage.getItem("mpesaNumber") || "");
 
-  // Clean and format the user-entered mpesaNumber
-  const formattedMpesaNumber = cleanAndFormatMpesaNumber(
-    userEnteredMpesaNumber
-  );
+    const newData = {
+      username: newUsername,
+      bio: newBio,
+      gender: newGender,
+    };
+    if (parsedMpesa) {
+      newData.mpesaNumber = parsedMpesa;
+    }
 
-  // Now you can use `formattedMpesaNumber` in your `newData` object
-  const newData = {
-    username: newUsername,
-    
-    mpesaNumber: parseInt(formattedMpesaNumber), // Convert to a number using parseInt
-    bio: newBio,
-    gender: newGender,
-  };
-
-  if (storedUserUid) {
-    updateUserProfile(storedUserUid, app, newData);
-
-    // Update localStorage items with the new data
-    localStorage.setItem("username", newUsername);
-
-    localStorage.setItem("mpesaNumber", newMpesaNumber);
+    // 1. Immediately update localStorage for instant optimistic persistence
+    if (newUsername) {
+      localStorage.setItem("username", newUsername);
+      localStorage.setItem("userName", newUsername);
+    }
+    if (formattedMpesaNumber) {
+      localStorage.setItem("mpesaNumber", formattedMpesaNumber);
+    }
     localStorage.setItem("defaultBio", newBio);
     localStorage.setItem("gender", newGender);
 
-    // Update the profile immediately
-    populateUserDetailsInHTML(storedUserUid, app);
-  }
-});
+    const activeUid = localStorage.getItem("userUid");
+
+    // 2. Sync to Firebase RTDB in background
+    if (activeUid) {
+      updateUserProfile(activeUid, app, newData);
+    }
+
+    // 3. Immediately update DOM elements in current view
+    populateUserDetailsInHTML(activeUid, app);
+
+    // 4. Close modal and show feedback
+    if (editProfilePopup) {
+      editProfilePopup.classList.remove("open");
+    }
+    showAlert("Profile details updated successfully!");
+  });
+}

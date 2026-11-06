@@ -209,53 +209,42 @@
             Edit Profile
           </div>
 
-          <div id="edit-profile-popup" class="popup">
-            <form id="edit-profile-form">
-              <input type="text" id="edit-username" placeholder="Username" required>
-              
-              <input type="number" id="edit-mpesa-number" placeholder="M-Pesa Number" required readonly>
-              
-              <script>
-                // Get the M-Pesa number from localStorage
-                var mpesaNumber = localStorage.getItem('mpesaNumber');
-
-                // Check if the value is not null or undefined before setting it
-                if (mpesaNumber !== null && mpesaNumber !== undefined) {
-                  document.getElementById('edit-mpesa-number').value = mpesaNumber;
-                }
-              </script>
-
-              <!-- Input field for Bio -->
-              <input type="text" id="edit-bio" placeholder="Bio" required>
-              <!-- Input field for Gender -->
-              <input type="text" id="edit-gender" placeholder="Gender" required>
-              <button type="submit">OK</button>
-            </form>
+                    <!-- Modern Edit Profile Modal -->
+          <div id="edit-profile-popup" class="popup-container" onclick="if(event.target === this) document.getElementById('edit-profile-popup').classList.remove('open');">
+            <div class="popup-content">
+              <div class="popup-header">
+                <h3><i class="fas fa-user-edit"></i> Edit Profile Details</h3>
+                <button type="button" class="popup-close-btn" onclick="document.getElementById('edit-profile-popup').classList.remove('open');" title="Close">&times;</button>
+              </div>
+              <form id="edit-profile-form" style="display:flex; flex-direction:column; gap:14px; margin-top:16px;">
+                <div>
+                  <label style="font-size:0.82rem; font-weight:600; opacity:0.8; display:block; margin-bottom:5px;">Username</label>
+                  <input type="text" id="edit-username" placeholder="Enter username" required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.15); font-size:0.95rem; background:inherit; color:inherit;">
+                </div>
+                <div>
+                  <label style="font-size:0.82rem; font-weight:600; opacity:0.8; display:block; margin-bottom:5px;">M-Pesa Number (Registered)</label>
+                  <input type="text" id="edit-mpesa-number" placeholder="M-Pesa Number" readonly style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.15); font-size:0.95rem; background:rgba(0,0,0,0.05); color:inherit; cursor:not-allowed;">
+                </div>
+                <div>
+                  <label style="font-size:0.82rem; font-weight:600; opacity:0.8; display:block; margin-bottom:5px;">Bio</label>
+                  <input type="text" id="edit-bio" placeholder="Tell us about yourself" required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.15); font-size:0.95rem; background:inherit; color:inherit;">
+                </div>
+                <div>
+                  <label style="font-size:0.82rem; font-weight:600; opacity:0.8; display:block; margin-bottom:5px;">Gender</label>
+                  <select id="edit-gender" required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.15); font-size:0.95rem; background:inherit; color:inherit;">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="popup-actions" style="margin-top:10px;">
+                  <button type="button" class="popup-btn popup-btn-cancel" onclick="document.getElementById('edit-profile-popup').classList.remove('open');">Cancel</button>
+                  <button type="submit" class="popup-btn" style="background:#7380ec; color:#fff;">Save Changes</button>
+                </div>
+              </form>
+            </div>
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </div>
+          </div>
 
 
 
