@@ -381,10 +381,7 @@ async function handleDepositClick() {
   openMpesaModalForPlan(displayName, investmentAmount);
 }
 
-;
 
-  return planTypes[userWeek3Amount] || "";
-}
 
 // Retrieve the uploaded image URL from  storage
 const uploadedImageUrl = sessionStorage.getItem("uploadedImageUrl");
