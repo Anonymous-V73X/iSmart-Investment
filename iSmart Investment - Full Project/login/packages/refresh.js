@@ -188,110 +188,200 @@ depositButtons.forEach((button) => {
   button.addEventListener("click", handleDepositClick);
 });
 
+// ========================================================
+// M-PESA DARAJA STK SIMULATOR & INVESTMENT CONTROLLER
+// ========================================================
+let currentStkPackage = {
+  plan: "",
+  amount: 0,
+  roi: 0
+};
+
+window.openMpesaModalForPlan = function(planName, amount) {
+  currentStkPackage.plan = planName;
+  currentStkPackage.amount = parseFloat(amount) || 0;
+  currentStkPackage.roi = Math.round(currentStkPackage.amount * 1.35);
+
+  const modal = document.getElementById("mpesa-stk-modal");
+  if (!modal) return;
+
+  // Reset steps
+  document.getElementById("stk-step-confirm").style.display = "block";
+  document.getElementById("stk-step-pin").style.display = "none";
+  document.getElementById("stk-step-processing").style.display = "none";
+  document.getElementById("stk-step-success").style.display = "none";
+
+  // Pre-fill labels
+  document.getElementById("stk-plan-name").textContent = planName;
+  document.getElementById("stk-amount-display").textContent = currentStkPackage.amount.toLocaleString();
+
+  // Pre-fill user's registered phone
+  const storedPhone = localStorage.getItem("mpesaNumber") || "";
+  let cleanPhone = (storedPhone + "").replace(/[^0-9]/g, "");
+  if (cleanPhone.startsWith("254")) {
+    cleanPhone = cleanPhone.substring(3);
+  } else if (cleanPhone.startsWith("0")) {
+    cleanPhone = cleanPhone.substring(1);
+  }
+  const phoneInput = document.getElementById("stk-phone-input");
+  if (phoneInput) phoneInput.value = cleanPhone;
+
+  modal.style.display = "flex";
+  modal.classList.add("open");
+};
+
+window.closeMpesaModal = function() {
+  const modal = document.getElementById("mpesa-stk-modal");
+  if (modal) {
+    modal.style.display = "none";
+    modal.classList.remove("open");
+  }
+};
+
+window.initiateMockStkPush = function() {
+  const phone = document.getElementById("stk-phone-input")?.value.trim();
+  if (!phone || phone.length < 9) {
+    alert("Please enter a valid M-Pesa phone number");
+    return;
+  }
+
+  // Switch to simulated phone PIN prompt (Step 2)
+  document.getElementById("stk-step-confirm").style.display = "none";
+  document.getElementById("stk-step-pin").style.display = "block";
+
+  document.getElementById("stk-phone-amt").textContent = currentStkPackage.amount.toLocaleString();
+  const pinInput = document.getElementById("stk-pin-input");
+  if (pinInput) {
+    pinInput.value = "";
+    setTimeout(() => pinInput.focus(), 300);
+  }
+};
+
+window.cancelStkPrompt = function() {
+  closeMpesaModal();
+  showAlert("Payment cancelled by user.");
+};
+
+window.submitMockPin = function() {
+  const pin = document.getElementById("stk-pin-input")?.value;
+  if (!pin || pin.length < 4) {
+    alert("Please enter your 4-digit M-Pesa PIN");
+    return;
+  }
+
+  // Step 3: Show processing animation (Daraja Webhook simulation)
+  document.getElementById("stk-step-pin").style.display = "none";
+  document.getElementById("stk-step-processing").style.display = "block";
+
+  // Simulate network roundtrip latency (2 seconds)
+  setTimeout(() => {
+    executeSuccessfulInvestment();
+  }, 2000);
+};
+
+function generateMockReceipt() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let receipt = "Q";
+  for (let i = 0; i < 9; i++) {
+    receipt += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return receipt;
+}
+
+async function executeSuccessfulInvestment() {
+  const userUid = localStorage.getItem("userUid");
+  const amount = currentStkPackage.amount;
+  const plan = currentStkPackage.plan;
+  const receiptNo = generateMockReceipt();
+  const timestamp = new Date().toISOString();
+
+  // 1. Calculate latest week key
+  let currentRecent = parseFloat(localStorage.getItem("recentWeekInvestment")) || 0;
+  let currentSum = parseFloat(localStorage.getItem("weekInvestmentSum")) || 0;
+
+  // New investment becomes the active recent week investment
+  let newRecent = amount;
+  let newSum = currentSum + amount;
+
+  // 2. Optimistic local storage update
+  localStorage.setItem("recentWeekInvestment", newRecent);
+  localStorage.setItem("weekInvestmentSum", newSum);
+
+  // 3. Record transaction in localStorage
+  let localTx = [];
+  try {
+    localTx = JSON.parse(localStorage.getItem("transactions") || "[]");
+  } catch (e) {
+    localTx = [];
+  }
+  localTx.unshift({
+    receiptNo: receiptNo,
+    type: "Deposit",
+    plan: plan,
+    amount: amount,
+    date: timestamp,
+    status: "Completed"
+  });
+  localStorage.setItem("transactions", JSON.stringify(localTx));
+
+  // 4. Background Firebase RTDB updates
+  if (userUid) {
+    try {
+      // Update weekInvestment structure
+      await update(ref(database, `users/${userUid}/weekInvestment`), {
+        week1: newRecent
+      });
+
+      // Append transaction record
+      const newTxRef = ref(database, `users/${userUid}/transactions/${Date.now()}`);
+      await set(newTxRef, {
+        refNo: receiptNo,
+        amount: amount,
+        package: plan,
+        status: "Approved",
+        date: timestamp
+      });
+
+      console.log("Investment successfully committed to Firebase database");
+    } catch (dbErr) {
+      console.warn("Database sync deferred (rules or offline):", dbErr.message);
+    }
+  }
+
+  // Step 4: Show success screen
+  document.getElementById("stk-step-processing").style.display = "none";
+  document.getElementById("stk-step-success").style.display = "block";
+
+  document.getElementById("stk-receipt-code").textContent = receiptNo;
+  document.getElementById("stk-summary-plan").textContent = plan;
+  document.getElementById("stk-summary-amount").textContent = "KES " + amount.toLocaleString();
+  document.getElementById("stk-summary-roi").textContent = "KES " + currentStkPackage.roi.toLocaleString();
+}
+
+window.finishInvestment = function() {
+  closeMpesaModal();
+  window.location.href = "../dashboard/";
+};
+
 async function handleDepositClick() {
   const salesDiv = this.closest(".sales");
   const investmentAmount = parseFloat(
-    salesDiv.querySelector(".ref[investment]").getAttribute("investment")
+    salesDiv.querySelector(".ref[investment]")?.getAttribute("investment") || 0
   );
+  const planForUrl = this.getAttribute("data-plan") || "Starter";
 
-  if (!isNaN(investmentAmount)) {
-    const userUid = localStorage.getItem("userUid");
+  const planNames = {
+    simba: "Simba (KES 50,000)",
+    ndovu: "Ndovu (KES 30,000)",
+    kifaru: "Kifaru (KES 10,000)",
+    chui: "Chui (KES 1,000)"
+  };
 
-    // Calculate the number of weeks between oldDate and the current date
-    const currentDate = new Date();
-    const oldDate = new Date();
-    const timeDifference = currentDate - oldDate;
-    const weeksDifference = Math.floor(timeDifference / (1000 * 3600 * 24 * 7));
-
-    // Find the most recent week by checking the largest number in weekInvestment keys
-    let mostRecentWeek = 1;
-    for (const key in userData.weekInvestment) {
-      const weekNumber = parseInt(key.replace("week", ""));
-      if (!isNaN(weekNumber) && weekNumber > mostRecentWeek) {
-        mostRecentWeek = weekNumber;
-      }
-    }
-
-    // Calculate the expected date to deposit based on the most recent week and oldDate
-    const millisecondsPerWeek = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
-    const expectedDepositDate = new Date(
-      oldDate.getTime() + mostRecentWeek * millisecondsPerWeek
-    );
-
-    console.log(`Expected date to deposit: ${expectedDepositDate}`);
-
-    // Check if the most recent week is ahead of the current date
-    if (mostRecentWeek > weeksDifference) {
-      const formattedDepositDate = expectedDepositDate.toLocaleString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        timeZoneName: "short",
-      });
-
-      
-
-      const popUp = document.getElementById("error-Popup");
-      const popUpMessage = `Apologies, but you're not permitted to make a deposit at this moment. Please wait until ${formattedDepositDate} to proceed.`;
-      showPopup(popUp, popUpMessage);
-      return;
-    }
-
-    // Construct the path to the most recent week's data in the database
-    const weekInvestmentRef = ref(
-      database,
-      `users/${userUid}/weekInvestment/week${mostRecentWeek}`
-    );
-
-    try {
-      const weekInvestmentSnapshot = await get(weekInvestmentRef);
-      const userWeekAmount = weekInvestmentSnapshot.val();
-
-      if (userWeekAmount > 100) {
-        const planType = getPlanType(userWeekAmount);
-
-        const popUp = document.getElementById("error-Popup");
-        const popUpMessage = `Apologies, you are currently unable to purchase another plan as you already possess a ${planType} plan.`;
-        showPopup(popUp, popUpMessage);
-
-        return;
-      }
-
-      const planForUrl = this.getAttribute("data-plan");
-      const planUrls = {
-        simba: "https://alekie254.000webhostapp.com/index.php",
-        ndovu: "https://alekie254.000webhostapp.com/ndovu.php",
-        kifaru: "https://alekie254.000webhostapp.com/kifaru.php",
-        chui: "https://alekie254.000webhostapp.com/chui.php",
-      };
-
-      const redirectUrl = planUrls[planForUrl];
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-        
-
-      } else {
-        const popUp = document.getElementById("error-Popup");
-        const popUpMessage = "Can't find that plan";
-        showPopup(popUp, popUpMessage);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const displayName = planNames[planForUrl] || `${planForUrl.toUpperCase()} Plan`;
+  openMpesaModalForPlan(displayName, investmentAmount);
 }
 
-function getPlanType(userWeek3Amount) {
-  const planTypes = {
-    50000: "Simba",
-    30000: "Ndovu",
-    10000: "Kifaru",
-    1000: "Chui",
-  };
+;
 
   return planTypes[userWeek3Amount] || "";
 }

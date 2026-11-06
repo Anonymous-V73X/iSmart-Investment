@@ -143,3 +143,356 @@ border: 1.5px solid rgba(254, 254, 254, 0.152);
 
 
 
+
+
+/* ========================================================
+   M-PESA DARAJA STK MODAL & SIMULATOR STYLES
+   ======================================================== */
+.mpesa-modal-card {
+  max-width: 440px !important;
+  border-radius: 24px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: var(--color-white, #ffffff) !important;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(0, 166, 81, 0.2) !important;
+}
+
+.stk-step {
+  padding: 24px;
+}
+
+.mpesa-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.mpesa-logo-badge {
+  background: #f0fdf4;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 166, 81, 0.25);
+  display: inline-flex;
+  align-items: center;
+}
+
+.mpesa-close {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #94a3b8;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.mpesa-close:hover {
+  color: #ef4444;
+}
+
+.mpesa-details {
+  text-align: center;
+  padding: 10px 0 16px 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.mpesa-badge-tier {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #00a651;
+  background: rgba(0, 166, 81, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+.mpesa-amount-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+}
+
+.mpesa-amount-display .currency {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-info-dark, #7d8da1);
+}
+
+.mpesa-amount-display .amount {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--color-dark, #363949);
+}
+
+.mpesa-subtitle {
+  font-size: 0.8rem;
+  color: var(--color-info-dark, #7d8da1);
+  margin-top: 4px;
+}
+
+.mpesa-input-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-dark, #363949);
+  margin-bottom: 6px;
+}
+
+.phone-input-wrap {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid rgba(0, 166, 81, 0.3);
+  border-radius: 12px;
+  background: var(--color-background, #f6f6f9);
+  overflow: hidden;
+}
+
+.phone-input-wrap .prefix {
+  padding: 12px 14px;
+  font-weight: 700;
+  color: #00a651;
+  background: rgba(0, 166, 81, 0.08);
+  font-size: 0.95rem;
+  border-right: 1px solid rgba(0, 166, 81, 0.2);
+}
+
+.phone-input-wrap input {
+  flex: 1;
+  border: none !important;
+  background: transparent !important;
+  padding: 12px 14px !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  color: var(--color-dark, #363949) !important;
+  outline: none !important;
+}
+
+.mpesa-input-group .hint {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+.mpesa-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn-mpesa-cancel {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: var(--color-background, #f6f6f9);
+  color: var(--color-dark, #363949);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-mpesa-pay {
+  flex: 2;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: #00a651;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 166, 81, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s ease;
+}
+
+.btn-mpesa-pay:hover {
+  background: #008f45;
+  transform: translateY(-1px);
+}
+
+/* ========================================================
+   SIMULATED PHONE STK PROMPT BOX
+   ======================================================== */
+.simulated-stk-box {
+  background: #000000;
+  border-radius: 24px;
+  padding: 20px 14px 18px 14px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  position: relative;
+  max-width: 310px;
+  margin: 0 auto;
+}
+
+.stk-notch {
+  width: 90px;
+  height: 12px;
+  background: #1e1e1e;
+  border-radius: 0 0 10px 10px;
+  margin: -10px auto 14px auto;
+}
+
+.stk-dialog-phone {
+  background: #2a2b2f;
+  border-radius: 14px;
+  padding: 16px;
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.stk-header-phone {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #4ade80;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+}
+
+.stk-text-msg {
+  font-size: 0.84rem;
+  line-height: 1.35;
+  margin-bottom: 14px;
+  color: #f1f5f9;
+}
+
+.stk-pin-field input {
+  width: 100% !important;
+  background: #18191c !important;
+  border: 1px solid #4ade80 !important;
+  color: #4ade80 !important;
+  border-radius: 8px !important;
+  padding: 8px 10px !important;
+  text-align: center !important;
+  letter-spacing: 4px !important;
+  font-size: 1.1rem !important;
+  outline: none !important;
+}
+
+.stk-phone-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.stk-phone-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stk-phone-btn.cancel {
+  background: #3f3f46;
+  color: #e4e4e7;
+}
+
+.stk-phone-btn.send {
+  background: #00a651;
+  color: #ffffff;
+}
+
+.stk-waiting-text {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.85rem;
+  color: #00a651;
+  font-weight: 600;
+}
+
+/* ========================================================
+   PROCESSING & SUCCESS
+   ======================================================== */
+.mpesa-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0, 166, 81, 0.15);
+  border-top-color: #00a651;
+  border-radius: 50%;
+  animation: spinMpesa 0.9s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spinMpesa {
+  to { transform: rotate(360deg); }
+}
+
+.success-check-icon {
+  width: 60px;
+  height: 60px;
+  background: #dcfce7;
+  color: #00a651;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto;
+}
+
+.mpesa-summary-card {
+  background: var(--color-background, #f6f6f9);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin: 16px 0 20px 0;
+  text-align: left;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+}
+
+.summary-row:last-child {
+  margin-bottom: 0;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.btn-mpesa-finish {
+  width: 100%;
+  padding: 13px;
+  background: #00a651;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 166, 81, 0.35);
+}
+
+.dark-theme-variables .mpesa-modal-card {
+  background: #181a1e !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark-theme-variables .phone-input-wrap {
+  background: #202528 !important;
+}
+
+.dark-theme-variables .btn-mpesa-cancel {
+  background: #202528 !important;
+  color: #cbd5e1 !important;
+}
+
+.dark-theme-variables .mpesa-summary-card {
+  background: #202528 !important;
+}

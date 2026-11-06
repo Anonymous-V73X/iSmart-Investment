@@ -794,6 +794,98 @@
       }
     })();
   </script>
+  <!-- ============================================== -->
+  <!-- MOCK SAFARICOM M-PESA DARAJA STK PUSH MODAL -->
+  <!-- ============================================== -->
+  <div id="mpesa-stk-modal" class="popup-container" style="display:none; z-index:999999;" onclick="if(event.target === this) closeMpesaModal();">
+    <div class="popup-content mpesa-modal-card">
+
+      <!-- STEP 1: CONFIRM PHONE & AMOUNT -->
+      <div id="stk-step-confirm" class="stk-step">
+        <div class="mpesa-header">
+          <div class="mpesa-logo-badge">
+            <span style="color:#00a651; font-weight:900; font-size:1.1rem;">M-PESA</span>
+          </div>
+          <button type="button" class="mpesa-close" onclick="closeMpesaModal()">&times;</button>
+        </div>
+        
+        <div class="mpesa-details">
+          <div class="mpesa-badge-tier" id="stk-plan-name">PLAN NAME</div>
+          <div class="mpesa-amount-display">
+            <span class="currency">KES</span>
+            <span class="amount" id="stk-amount-display">0</span>
+          </div>
+          <p class="mpesa-subtitle">Lipa Na M-Pesa Online (STK Push)</p>
+        </div>
+
+        <form id="stk-confirm-form" onsubmit="event.preventDefault(); initiateMockStkPush();">
+          <div class="mpesa-input-group">
+            <label for="stk-phone-input">M-Pesa Phone Number</label>
+            <div class="phone-input-wrap">
+              <span class="prefix">+254</span>
+              <input type="tel" id="stk-phone-input" placeholder="712345678" maxlength="10" required>
+            </div>
+            <small class="hint">An STK prompt will be simulated to this number</small>
+          </div>
+
+          <div class="mpesa-actions">
+            <button type="button" class="btn-mpesa-cancel" onclick="closeMpesaModal()">Cancel</button>
+            <button type="submit" class="btn-mpesa-pay">
+              <i class="fas fa-lock"></i> Pay Now
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- STEP 2: SIMULATED PIN PROMPT (PHONE SCREEN) -->
+      <div id="stk-step-pin" class="stk-step" style="display:none;">
+        <div class="simulated-stk-box">
+          <div class="stk-notch"></div>
+          <div class="stk-dialog-phone">
+            <div class="stk-header-phone">
+              <span>SIM Toolkit</span>
+            </div>
+            <p class="stk-text-msg" id="stk-phone-msg">
+              Do you want to pay KES <strong id="stk-phone-amt">0</strong> to <strong id="stk-paybill-name">iSMART INVESTMENT</strong>?
+            </p>
+            <div class="stk-pin-field">
+              <input type="password" id="stk-pin-input" maxlength="4" placeholder="Enter M-Pesa PIN" autocomplete="off">
+            </div>
+            <div class="stk-phone-buttons">
+              <button type="button" class="stk-phone-btn cancel" onclick="cancelStkPrompt()">Cancel</button>
+              <button type="button" class="stk-phone-btn send" onclick="submitMockPin()">Send</button>
+            </div>
+          </div>
+        </div>
+        <p class="stk-waiting-text"><i class="fas fa-spinner fa-spin"></i> Awaiting M-Pesa PIN entry...</p>
+      </div>
+
+      <!-- STEP 3: PROCESSING / DARAJA WEBHOOK LISTENER -->
+      <div id="stk-step-processing" class="stk-step" style="display:none; text-align:center; padding: 30px 10px;">
+        <div class="mpesa-spinner"></div>
+        <h3 style="margin-top:20px; font-weight:700;">Validating Transaction...</h3>
+        <p style="opacity:0.8; font-size:0.9rem;">Receiving payment callback confirmation from Safaricom...</p>
+      </div>
+
+      <!-- STEP 4: SUCCESS NOTIFICATION -->
+      <div id="stk-step-success" class="stk-step" style="display:none; text-align:center; padding: 25px 10px;">
+        <div class="success-check-icon">
+          <i class="fas fa-check"></i>
+        </div>
+        <h2 style="color:#00a651; font-weight:800; margin-top:15px;">Payment Confirmed!</h2>
+        <p style="font-size:0.92rem; opacity:0.85; margin-bottom:15px;" id="stk-success-msg">
+          Receipt: <strong id="stk-receipt-code">QJ84HX90KL</strong>
+        </p>
+        <div class="mpesa-summary-card">
+          <div class="summary-row"><span>Package</span><strong id="stk-summary-plan">-</strong></div>
+          <div class="summary-row"><span>Invested</span><strong id="stk-summary-amount">-</strong></div>
+          <div class="summary-row"><span>Expected Return (135%)</span><strong id="stk-summary-roi" style="color:#00a651;">-</strong></div>
+        </div>
+        <button type="button" class="btn-mpesa-finish" onclick="finishInvestment()">View in Dashboard</button>
+      </div>
+
+    </div>
+  </div>
 </body>
 
 </html>
