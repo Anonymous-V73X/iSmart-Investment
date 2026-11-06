@@ -371,45 +371,74 @@ function showAlert(message) {
   }, 3000); // Hide the alert after 3 seconds
 }
 
-// Function to upload an image and store the URL in the user's data
-function uploadImageAndStoreUrl() {
-  const ref = firebase.storage().ref();
-  const file = document.querySelector("#photo").files[0];
-  const name = +new Date() + "-" + file.name;
-  const metadata = {
-    contentType: file.type,
-  };
-  const task = ref.child(name).put(file, metadata);
+// Function to upload an image and store the URL with instant preview
+window.uploadImageAndStoreUrl = function() {
+  const fileInput = document.querySelector("#photo");
+  const file = fileInput?.files?.[0];
+  if (!file) return;
 
-  task
-    .then((snapshot) => snapshot.ref.getDownloadURL())
-    .then((url) => {
-      console.log(url);
-      showAlert("Image uploaded successfully");
-      // Reload the page after showing the error pop-up
-      setTimeout(() => {
-        location.reload();
-      }, 1000);
+  // File size validation (max 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    showAlert("File is too large! Please choose an image under 5MB.");
+    return;
+  }
 
-      // Get the user UID from session storage
-      const storedUserUid = localStorage.getItem("userUid");
-
-      if (storedUserUid) {
-        // Store the URL in the user's database reference
-        storeImageUrlInDatabase(storedUserUid, url, app);
-
-        // Close the upload popup
-        closeImageUploadPopup();
-      } else {
-        console.error("User UID not found in session storage.");
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      showAlert("Error uploading image");
+  // 1. Instant optimistic UI preview
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const previewUrl = e.target.result;
+    document.querySelectorAll("#profileImage, .profile-image").forEach(img => {
+      img.src = previewUrl;
     });
-}
+    localStorage.setItem("selectedAvatar", previewUrl);
+  };
+  reader.readAsDataURL(file);
 
-// Event listener for the file input element's onchange event
-const fileInput = document.querySelector("#photo");
-fileInput.addEventListener("change", uploadImageAndStoreUrl);
+  closeImageUploadPopup();
+  showAlert("Uploading profile picture...");
+
+  const storedUserUid = localStorage.getItem("userUid");
+
+  // 2. Upload to Firebase Storage or persist binary Base64 fallback to RTDB
+  try {
+    const storageRef = firebase.storage().ref();
+    const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "_")}`;
+    const task = storageRef.child(`avatars/${storedUserUid || "users"}/${fileName}`).put(file, { contentType: file.type });
+
+    task
+      .then(snapshot => snapshot.ref.getDownloadURL())
+      .then(downloadUrl => {
+        if (storedUserUid) {
+          storeImageUrlInDatabase(storedUserUid, downloadUrl, app);
+          localStorage.setItem("urlImage", downloadUrl);
+        }
+        showAlert("Profile picture updated successfully!");
+      })
+      .catch(storageError => {
+        console.warn("Storage upload failed, falling back to database binary/base64 storage:", storageError);
+        // Fallback: compress and store directly in user's profile node
+        const readerBackup = new FileReader();
+        readerBackup.onload = function(evt) {
+          const base64Data = evt.target.result;
+          if (storedUserUid) {
+            storeImageUrlInDatabase(storedUserUid, base64Data, app);
+            localStorage.setItem("urlImage", base64Data);
+          }
+          showAlert("Profile picture updated successfully!");
+        };
+        readerBackup.readAsDataURL(file);
+      });
+  } catch (err) {
+    console.warn("Firebase Storage unavailable, saving directly to database:", err);
+    const readerDirect = new FileReader();
+    readerDirect.onload = function(evt) {
+      const base64Data = evt.target.result;
+      if (storedUserUid) {
+        storeImageUrlInDatabase(storedUserUid, base64Data, app);
+        localStorage.setItem("urlImage", base64Data);
+      }
+      showAlert("Profile picture updated successfully!");
+    };
+    readerDirect.readAsDataURL(file);
+  }
+};

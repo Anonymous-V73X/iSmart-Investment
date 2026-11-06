@@ -1,3 +1,22 @@
+// Global show/close functions for Image Upload Modal
+window.showImageUploadPopup = function() {
+  const container = document.querySelector("#popupContainer");
+  if (container) {
+    container.style.display = "flex";
+  }
+};
+
+window.closeImageUploadPopup = function() {
+  const container = document.querySelector("#popupContainer");
+  if (container) {
+    container.style.display = "none";
+  }
+  const photoInput = document.querySelector("#photo");
+  if (photoInput) {
+    photoInput.value = "";
+  }
+};
+
 //PreLoader Starts Here...
 
 const fade = () => {
@@ -130,14 +149,8 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-function showImageUploadPopup() {
-  document.querySelector("#popupContainer").style.display = "flex";
-}
 
-function closeImageUploadPopup() {
-  document.querySelector("#popupContainer").style.display = "none";
-}
 
-function closeImageUploadPopup() {
-  document.querySelector("#popupContainer").style.display = "none";
-}
+
+
+

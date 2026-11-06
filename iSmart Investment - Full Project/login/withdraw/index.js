@@ -1,3 +1,22 @@
+// Global show/close functions for Image Upload Modal
+window.showImageUploadPopup = function() {
+  const container = document.querySelector("#popupContainer");
+  if (container) {
+    container.style.display = "flex";
+  }
+};
+
+window.closeImageUploadPopup = function() {
+  const container = document.querySelector("#popupContainer");
+  if (container) {
+    container.style.display = "none";
+  }
+  const photoInput = document.querySelector("#photo");
+  if (photoInput) {
+    photoInput.value = "";
+  }
+};
+
 //Getting Things Ready...
 
 const dotsElement = document.getElementById("typing-dots");
@@ -218,14 +237,8 @@ setInterval(() => {
 
 //Uploadin Image Functions
 
-function showImageUploadPopup() {
-  document.querySelector("#popupContainer").style.display = "flex";
-}
 
-function closeImageUploadPopup() {
-  document.querySelector("#popupContainer").style.display = "none";
-}
 
-function closeImageUploadPopup() {
-  document.querySelector("#popupContainer").style.display = "none";
-}
+
+
+

@@ -1,3 +1,22 @@
+// Global show/close functions for Image Upload Modal
+window.showImageUploadPopup = function() {
+  const container = document.querySelector("#popupContainer");
+  if (container) {
+    container.style.display = "flex";
+  }
+};
+
+window.closeImageUploadPopup = function() {
+  const container = document.querySelector("#popupContainer");
+  if (container) {
+    container.style.display = "none";
+  }
+  const photoInput = document.querySelector("#photo");
+  if (photoInput) {
+    photoInput.value = "";
+  }
+};
+
 //PreLoader Starts Here...
 
 const fade = () => {
@@ -268,14 +287,8 @@ function getTransactionsFromLocalStorage() {
 // Call the function to populate transaction data from localStorage when the page loads
 window.addEventListener("load", getTransactionsFromLocalStorage);
 
-function showImageUploadPopup() {
-  document.querySelector("#popupContainer").style.display = "flex";
-}
 
-function closeImageUploadPopup() {
-  document.querySelector("#popupContainer").style.display = "none";
-}
 
-function closeImageUploadPopup() {
-  document.querySelector("#popupContainer").style.display = "none";
-}
+
+
+
