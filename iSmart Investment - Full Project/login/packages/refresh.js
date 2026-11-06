@@ -23,7 +23,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-firebase.initializeApp(firebaseConfig);
 
 // Function to retrieve user data from the database and update local storage
 function retrieveAndListenUserData(userUid, app) {
@@ -356,8 +355,11 @@ if (storedUserUid) {
   onValue(urlImageRef, (snapshot) => {
     const liveImageUrl = snapshot.val();
     if (liveImageUrl) {
-      localStorage.setItem("urlImage", liveImageUrl);
-      localStorage.setItem("selectedAvatar", liveImageUrl);
+      // Only cache in localStorage if it's a URL (not raw base64 — too large)
+      if (liveImageUrl && !liveImageUrl.startsWith("data:")) {
+        localStorage.setItem("urlImage", liveImageUrl);
+        localStorage.setItem("selectedAvatar", liveImageUrl);
+      }
       updateProfileImageSrc(liveImageUrl);
     } else {
       const fallback = localStorage.getItem("urlImage") || "../../img/avatar-1.png";
@@ -388,9 +390,9 @@ window.uploadImageAndStoreUrl = function() {
   const file = fileInput?.files?.[0];
   if (!file) return;
 
-  // File size validation (max 5MB)
-  if (file.size > 5 * 1024 * 1024) {
-    showAlert("File is too large! Please choose an image under 5MB.");
+  // File size validation (max 2MB for RTDB storage)
+  if (file.size > 2 * 1024 * 1024) {
+    showAlert("File is too large! Please choose an image under 2MB.");
     return;
   }
 
@@ -401,7 +403,8 @@ window.uploadImageAndStoreUrl = function() {
     document.querySelectorAll("#profileImage, .profile-image").forEach(img => {
       img.src = previewUrl;
     });
-    localStorage.setItem("selectedAvatar", previewUrl);
+    // Store only a marker in localStorage u2014 not the full base64
+    localStorage.setItem("selectedAvatar", "pending");
   };
   reader.readAsDataURL(file);
 
@@ -410,48 +413,17 @@ window.uploadImageAndStoreUrl = function() {
 
   const storedUserUid = localStorage.getItem("userUid");
 
-  // 2. Upload to Firebase Storage or persist binary Base64 fallback to RTDB
-  try {
-    const storageRef = firebase.storage().ref();
-    const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "_")}`;
-    const task = storageRef.child(`avatars/${storedUserUid || "users"}/${fileName}`).put(file, { contentType: file.type });
-
-    task
-      .then(snapshot => snapshot.ref.getDownloadURL())
-      .then(downloadUrl => {
-        if (storedUserUid) {
-          storeImageUrlInDatabase(storedUserUid, downloadUrl, app);
-          localStorage.setItem("urlImage", downloadUrl);
-        }
-        showAlert("Profile picture updated successfully!");
-      })
-      .catch(storageError => {
-        console.warn("Storage upload failed, falling back to database binary/base64 storage:", storageError);
-        // Fallback: compress and store directly in user's profile node
-        const readerBackup = new FileReader();
-        readerBackup.onload = function(evt) {
-          const base64Data = evt.target.result;
-          if (storedUserUid) {
-            storeImageUrlInDatabase(storedUserUid, base64Data, app);
-            localStorage.setItem("urlImage", base64Data);
-          }
-          showAlert("Profile picture updated successfully!");
-        };
-        readerBackup.readAsDataURL(file);
-      });
-  } catch (err) {
-    console.warn("Firebase Storage unavailable, saving directly to database:", err);
-    const readerDirect = new FileReader();
-    readerDirect.onload = function(evt) {
-      const base64Data = evt.target.result;
-      if (storedUserUid) {
-        storeImageUrlInDatabase(storedUserUid, base64Data, app);
-        localStorage.setItem("urlImage", base64Data);
-      }
-      showAlert("Profile picture updated successfully!");
-    };
-    readerDirect.readAsDataURL(file);
-  }
+  // 2. Read file as base64 and store in Firebase RTDB
+  const readerFinal = new FileReader();
+  readerFinal.onload = function(evt) {
+    const base64Data = evt.target.result;
+    if (storedUserUid) {
+      storeImageUrlInDatabase(storedUserUid, base64Data, app);
+      // After saving to RTDB, the onValue listener will update localStorage with the URL/base64
+    }
+    showAlert("Profile picture updated successfully!");
+  };
+  readerFinal.readAsDataURL(file);
 };
 
 // Function to open the pop-up
