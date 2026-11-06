@@ -440,3 +440,14 @@ window.uploadImageAndStoreUrl = function() {
     readerDirect.readAsDataURL(file);
   }
 };
+
+
+// Cross-tab / Cross-page instant sync listener
+window.addEventListener("storage", function(event) {
+  if (event.key === "urlImage" || event.key === "selectedAvatar") {
+    const newImage = event.newValue;
+    if (newImage && typeof updateProfileImageSrc === "function") {
+      updateProfileImageSrc(newImage);
+    }
+  }
+});
