@@ -1251,7 +1251,7 @@ main .recent-orders a {
   max-width: 2.8rem !important;
   max-height: 2.8rem !important;
   border-radius: 50% !important;
-  overflow: hidden !important;
+  overflow: visible !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1282,4 +1282,18 @@ main .recent-orders a {
   object-position: center !important;
   border-radius: 50% !important;
   aspect-ratio: 1 / 1 !important;
+}
+/* Online Indicator Dot */
+.online-dot {
+  width: 10px !important;
+  height: 10px !important;
+  background-color: #22c55e !important;
+  border-radius: 50% !important;
+  position: absolute !important;
+  bottom: 1px !important;
+  right: 1px !important;
+  border: 2px solid var(--color-white, #fff) !important;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 0 8px rgba(34, 197, 94, 0.6) !important;
+  z-index: 5 !important;
+  pointer-events: none !important;
 }
