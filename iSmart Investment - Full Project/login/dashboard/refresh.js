@@ -196,43 +196,51 @@ function retrieveAndListenUserData(userUid, app) {
     const userData = snapshot.val();
     if (userData) {
       // Update local storage with the latest user data
-      localStorage.setItem("email", userData.email);
-      localStorage.setItem("userName", userData.username);
-      localStorage.setItem("mpesaNumber", userData.mpesaNumber);
-      localStorage.setItem("gender", userData.gender);
-      localStorage.setItem("registrationTime", userData.registrationTime);
-      localStorage.setItem("defaultBio", userData.bio);
-      localStorage.setItem("darkMode", userData.darkMode);
-      localStorage.setItem(
-        "weekInvestmentSum",
-        calculateWeekInvestmentSum(userData.weekInvestment)
-      );
+      if (userData.email) localStorage.setItem("email", userData.email);
+      if (userData.username) localStorage.setItem("userName", userData.username);
+      if (userData.mpesaNumber) localStorage.setItem("mpesaNumber", userData.mpesaNumber);
+      if (userData.gender) localStorage.setItem("gender", userData.gender);
+      if (userData.registrationTime) localStorage.setItem("registrationTime", userData.registrationTime);
+      if (userData.bio) localStorage.setItem("defaultBio", userData.bio);
+      if (userData.darkMode !== undefined) localStorage.setItem("darkMode", userData.darkMode);
 
+      // Only overwrite investments if Firebase has actual weekInvestment data
+      if (userData.weekInvestment && typeof userData.weekInvestment === "object") {
+        const calculatedSum = calculateWeekInvestmentSum(userData.weekInvestment);
+        if (calculatedSum > 0) {
+          localStorage.setItem("weekInvestmentSum", calculatedSum);
+        }
 
-      let mostRecentWeek = 1;
-      for (const key in userData.weekInvestment) {
-        const weekNumber = parseInt(key.replace("week", ""));
-        if (!isNaN(weekNumber) && weekNumber > mostRecentWeek) {
-          mostRecentWeek = weekNumber;
+        let mostRecentWeek = 1;
+        for (const key in userData.weekInvestment) {
+          const weekNumber = parseInt(key.replace("week", ""));
+          if (!isNaN(weekNumber) && weekNumber > mostRecentWeek) {
+            mostRecentWeek = weekNumber;
+          }
+        }
+        const recentVal = userData.weekInvestment[`week${mostRecentWeek}`];
+        if (recentVal !== undefined && recentVal !== null) {
+          localStorage.setItem("recentWeekInvestment", recentVal);
         }
       }
 
-      localStorage.setItem(
-        "recentWeekInvestment",
-        userData.weekInvestment[`week${mostRecentWeek}`] || 0
-      );
-
-
-
-      localStorage.setItem(
-        "transactions",
-        JSON.stringify(userData.transactions || {})
-      );
+      if (userData.transactions && Object.keys(userData.transactions).length > 0) {
+        localStorage.setItem(
+          "transactions",
+          JSON.stringify(userData.transactions)
+        );
+      }
 
       // Call the update function with the retrieved user data
       updateUserDataElements();
-      fetchTransactionDataFromDatabase();
+      if (typeof populateRecentTransactionsTable === "function") {
+        populateRecentTransactionsTable();
+      }
     }
+  }, (error) => {
+    console.warn("RTDB sync deferred (offline or permission required):", error.message);
+    // Even if Firebase is denied, render from localStorage immediately
+    updateUserDataElements();
   });
 }
 
