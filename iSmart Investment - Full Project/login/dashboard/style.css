@@ -1255,3 +1255,45 @@ main .recent-orders a {
 .dark-theme-variables .popup-btn-cancel:hover {
   background: #2b3035;
 }
+
+/* Fixed Profile Photo Dimensions & Aspect Ratio */
+.profile-photo {
+  width: 2.8rem !important;
+  height: 2.8rem !important;
+  min-width: 2.8rem !important;
+  min-height: 2.8rem !important;
+  max-width: 2.8rem !important;
+  max-height: 2.8rem !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+}
+
+.profile-photo img,
+#profileImage,
+.profile-image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 50% !important;
+  display: block !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+/* Profile detail card large avatar on profile/index.html */
+.profile-card .profile-image,
+.profile-details .profile-image {
+  width: 110px !important;
+  height: 110px !important;
+  max-width: 110px !important;
+  max-height: 110px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1 !important;
+}
